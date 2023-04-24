@@ -1,3 +1,5 @@
+check
+
 ## Submission: 
 1. Submission is in pairs, but it's better for practice if you start alone.
 2. Coding: 70%, Questions: 30%.
