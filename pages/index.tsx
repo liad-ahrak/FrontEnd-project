@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import type { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import prisma from '../lib/prisma'
+import Pagination from '../components/Pagination';
+
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const feed = await prisma.post.findMany({
@@ -27,16 +29,34 @@ type Props = {
 };
 
 const Blog: React.FC<Props> = (props) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostPerPage] = useState(2);
+
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = props.feed.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = (pageNumber: React.SetStateAction<number>) => setCurrentPage(pageNumber);
+
   return (
     <Layout>
       <div className="page">
         <h1>Public Feed</h1>
         <main>
-          {props.feed.map((post) => (
+          <div>
+            {currentPosts.map((post) => (
             <div key={post.id} className="post">
               <Post post={post} />
             </div>
-          ))}
+            ))}
+          
+            <Pagination
+              postsPerPage={postsPerPage}
+              totalPosts={props.feed.length}
+              paginate={paginate} />
+          </div>
         </main>
       </div>
       <style jsx>{`
