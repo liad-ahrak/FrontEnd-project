@@ -2,6 +2,15 @@ import { PrismaClient, Prisma } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
+var posts_arr = []
+for(let i=0; i<=1000000; i++){
+  posts_arr.push({
+      title: 'post number '+ {i},
+      content: ':)',
+      published: true,
+    })
+}
+
 const userData: Prisma.UserCreateInput[] = [
   {
     name: 'Alice',
@@ -49,37 +58,13 @@ const userData: Prisma.UserCreateInput[] = [
     name: 'Lihad',
     email: 'Lihad@prisma.io',
     posts: {
-      create: [
-        {
-          title: 'Ask a question about Prisma on GitHub',
-          content: 'https://www.github.com/prisma/prisma/discussions',
-          published: true,
-        },
-      ],
+      create: posts_arr
     },
   },
 ]
 
 async function main() {
   console.log(`Start seeding ...`)
-  // for(let i=0; i<=1000000; i++){
-  //   const user = await prisma.user.create({
-  //     name: 'Lihi&Liad',
-  //     email: 'LIHAD@prisma.io',
-  //     posts: {
-  //       create: [
-  //         {
-  //           title: 'Ask a question about Prisma on GitHub',
-  //           content: 'https://www.github.com/prisma/prisma/discussions',
-  //           published: true,
-  //         },
-  //         {
-  //           title: 'Prisma on YouTube',
-  //           content: 'https://pris.ly/youtube',
-  //         },
-  //       ],
-  //     }})
-  // }
   for (const u of userData) {
     const user = await prisma.user.create({
       data: u,
