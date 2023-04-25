@@ -45,11 +45,41 @@ const userData: Prisma.UserCreateInput[] = [
         },
       ],
     },
+  },{
+    name: 'Lihad',
+    email: 'Lihad@prisma.io',
+    posts: {
+      create: [
+        {
+          title: 'Ask a question about Prisma on GitHub',
+          content: 'https://www.github.com/prisma/prisma/discussions',
+          published: true,
+        },
+      ],
+    },
   },
 ]
 
 async function main() {
   console.log(`Start seeding ...`)
+  // for(let i=0; i<=1000000; i++){
+  //   const user = await prisma.user.create({
+  //     name: 'Lihi&Liad',
+  //     email: 'LIHAD@prisma.io',
+  //     posts: {
+  //       create: [
+  //         {
+  //           title: 'Ask a question about Prisma on GitHub',
+  //           content: 'https://www.github.com/prisma/prisma/discussions',
+  //           published: true,
+  //         },
+  //         {
+  //           title: 'Prisma on YouTube',
+  //           content: 'https://pris.ly/youtube',
+  //         },
+  //       ],
+  //     }})
+  // }
   for (const u of userData) {
     const user = await prisma.user.create({
       data: u,
