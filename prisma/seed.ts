@@ -3,9 +3,9 @@ import { PrismaClient, Prisma } from '@prisma/client'
 const prisma = new PrismaClient()
 
 var posts_arr = []
-for(let i=0; i<=1000000; i++){
+for(let i=0; i<=100; i++){
   posts_arr.push({
-      title: 'post number '+ {i},
+      title: 'post number '+ i.toString,
       content: ':)',
       published: true,
     })
@@ -54,22 +54,100 @@ const userData: Prisma.UserCreateInput[] = [
         },
       ],
     },
-  },{
+  },
+  {
     name: 'Lihad',
-    email: 'Lihad@prisma.io',
+    email: 'lihad@prisma.io',
     posts: {
-      create: posts_arr
+      create: //posts_arr,
+      [
+        {
+          title: '1',
+          content: 'https://www.github.com/prisma/prisma/discussions',
+          published: true,
+        },
+        {
+          title: '2',
+          content: 'https://pris.ly/youtube',
+          published: true,
+        },
+      ],
     },
   },
-]
+ ]
 
 async function main() {
   console.log(`Start seeding ...`)
+ 
   for (const u of userData) {
     const user = await prisma.user.create({
       data: u,
     })
     console.log(`Created user with id: ${user.id}`)
+  }
+  for (let i = 0; i < 100000; i++) {
+    const user = {
+      name: `lihad ${i}`,
+      email: `lihad${i}@prisma.io`,
+      posts: {
+        create: [
+          {
+            title: `Post 1 of user lihad${i}`,
+            content: 'https://www.github.com/prisma/prisma/discussions',
+            published: true,
+          },
+          {
+            title: `Post 2 of user lihad${i}`,
+            content: 'https://www.github.com/prisma/prisma/discussions',
+            published: true,
+          },
+          {
+            title: `Post 3 of user lihad${i}`,
+            content: 'https://www.github.com/prisma/prisma/discussions',
+            published: true,
+          },
+          {
+            title: `Post 4 of user lihad${i}`,
+            content: 'https://www.github.com/prisma/prisma/discussions',
+            published: true,
+          },
+          {
+            title: `Post 5 of user lihad${i}`,
+            content: 'https://www.github.com/prisma/prisma/discussions',
+            published: true,
+          },
+          {
+            title: `Post 6 of user lihad${i}`,
+            content: 'https://www.github.com/prisma/prisma/discussions',
+            published: true,
+          },
+          {
+            title: `Post 7 of user lihad${i}`,
+            content: 'https://www.github.com/prisma/prisma/discussions',
+            published: true,
+          },
+          {
+            title: `Post 8 of user lihad${i}`,
+            content: 'https://www.github.com/prisma/prisma/discussions',
+            published: true,
+          },
+          {
+            title: `Post 9 of user lihad${i}`,
+            content: 'https://www.github.com/prisma/prisma/discussions',
+            published: true,
+          },
+          {
+            title: `Post 10 of user lihad${i}`,
+            content: 'https://www.github.com/prisma/prisma/discussions',
+            published: true,
+          },
+        ],
+      },
+    }
+    const newUser = await prisma.user.create({
+      data: user,
+    })
+    console.log(`Created user with id: ${newUser.id}`)
   }
   console.log(`Seeding finished.`)
 }

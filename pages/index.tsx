@@ -30,7 +30,7 @@ type Props = {
 
 const Blog: React.FC<Props> = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostPerPage] = useState(2);
+  const [postsPerPage, setPostPerPage] = useState(10);
 
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
