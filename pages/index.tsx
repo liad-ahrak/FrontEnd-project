@@ -5,9 +5,12 @@ import Post, { PostProps } from "../components/Post";
 import prisma from '../lib/prisma'
 import Pagination from '../components/Pagination';
 
-
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  console.log("asdasd");
+  console.log(context);
   const feed = await prisma.post.findMany({
+    skip: (30),
+    take: 100,
     where: {
       published: true,
     },
@@ -38,7 +41,9 @@ const Blog: React.FC<Props> = (props) => {
   const currentPosts = props.feed.slice(indexOfFirstPost, indexOfLastPost);
 
   // Change page
-  const paginate = (pageNumber: React.SetStateAction<number>) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber: React.SetStateAction<number>) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <Layout>
@@ -55,7 +60,8 @@ const Blog: React.FC<Props> = (props) => {
             <Pagination
               postsPerPage={postsPerPage}
               totalPosts={props.feed.length}
-              paginate={paginate} />
+              paginate={paginate}
+              currPage={currentPage} />
           </div>
         </main>
       </div>

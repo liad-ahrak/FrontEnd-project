@@ -1,29 +1,40 @@
 import React, { useState } from 'react';
 import Layout from './Layout';
 
+
 const Pagination = ({ postsPerPage, totalPosts, paginate, currPage=1}) => {
+
+  const selectPage = (pageNumber) => {
+    console.log(pageNumber);
+
+    let maxPage = Math.ceil(totalPosts / postsPerPage);
+    pageNumber = Math.max(Math.min(maxPage, pageNumber), 1);
+    setStartNum(Math.max(pageNumber - 1, 1));
+    currPage = pageNumber;
+    paginate(pageNumber);
+  }
   const pageNumbers = [];
   const [startNum, setStartNum] = useState(1);
 
   for (let i = startNum; i <= Math.min(Math.ceil(totalPosts / postsPerPage), startNum + 2); i++) {
     pageNumbers.push(i);
   }
-  console.log(currPage)
+  console.log(`curr page ${currPage}`)
   return (
     <nav>
         <div className='align-center'>
-            <button className='pagination'onClick={() => setStartNum( Math.min(Math.ceil(totalPosts / postsPerPage), startNum - 3) > 0 ? Math.min(Math.ceil(totalPosts / postsPerPage), startNum - 3) : 1 )} > previous </button>
+            <button className='pagination'onClick={() => selectPage(currPage - 1)} > previous </button>
             <ul className='pagination'>
                 {pageNumbers.map(number => (
                 <li key={number} className='page-item'>
-                    <a onClick={() => {currPage = {number}; return paginate(number)}} href='#'
+                    <a onClick={() => {selectPage(number)}} href='#'
                      className={currPage == {number} ? 'active' : ''}>
                     {number}
                     </a>
                 </li>
                 ))}
             </ul>
-            <button className='pagination' onClick={() => setStartNum(startNum + 3 > Math.ceil(totalPosts / postsPerPage) ? startNum : startNum + 3)}> next </button>
+            <button className='pagination' onClick={() => selectPage(currPage + 1)}> next </button>
         </div>
     <style jsx>{`
         .align-center button{
@@ -71,5 +82,4 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage=1}) => {
     </nav>
   );
 };
-
 export default Pagination;
