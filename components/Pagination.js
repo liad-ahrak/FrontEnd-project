@@ -2,24 +2,24 @@ import React, { useState } from 'react';
 import Layout from './Layout';
 
 
-const Pagination = ({ postsPerPage, totalPosts, paginate, currPage=1}) => {
+const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
 
+  // selectPage: sets 'currPage' to be the current page number
+  //             sets the pagination
   const selectPage = (pageNumber) => {
-    console.log(pageNumber);
-
     let maxPage = Math.ceil(totalPosts / postsPerPage);
     pageNumber = Math.max(Math.min(maxPage, pageNumber), 1);
     setStartNum(Math.max(pageNumber - 1, 1));
     currPage = pageNumber;
     paginate(pageNumber);
   }
+
   const pageNumbers = [];
   const [startNum, setStartNum] = useState(1);
 
   for (let i = startNum; i <= Math.min(Math.ceil(totalPosts / postsPerPage), startNum + 2); i++) {
     pageNumbers.push(i);
   }
-  console.log(`curr page ${currPage}`)
   return (
     <nav>
         <div className='align-center'>
