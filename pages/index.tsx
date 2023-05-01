@@ -32,7 +32,7 @@ type Props = {
 };
 
 const Blog: React.FC<Props> = (props) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [postsPerPage, setPostPerPage] = useState(10);
   const [feed, setFeed] = React.useState(props.feed);
 
