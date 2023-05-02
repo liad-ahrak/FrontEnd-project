@@ -31,6 +31,7 @@ type Props = {
   feed: PostProps[];
 };
 
+
 const Blog: React.FC<Props> = (props) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [postsPerPage, setPostPerPage] = useState(10);
@@ -70,7 +71,7 @@ const Blog: React.FC<Props> = (props) => {
           
             <Pagination
               postsPerPage={postsPerPage}
-              totalPosts={1000000}
+              totalPosts={10}//{1000000}
               paginate={paginate}
               currPage={currentPage}/>
           </div>

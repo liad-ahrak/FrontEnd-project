@@ -4,20 +4,47 @@ import Layout from './Layout';
 
 const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
 
+  const getData = async (i) => {
+    const response = await fetch(`/api/posts?currPage=${i}`);
+    const data = await response.json();
+    data.posts;
+  };
   // selectPage: sets 'currPage' to be the current page number
   //             sets the pagination
   const selectPage = (pageNumber) => {
-    let maxPage = Math.ceil(totalPosts / postsPerPage);
-    pageNumber = Math.max(Math.min(maxPage, pageNumber), 1);
-    setStartNum(Math.max(pageNumber - 1, 1));
+    //this if stament doesn't work need to figure it out :(
+    if (getData(pageNumber) === null || getData(pageNumber) === undefined){
+      pageNumber = pageNumber-1;
+    }
+    // let maxPage = Math.ceil(totalPosts / postsPerPage);
+    // pageNumber = Math.max(Math.min(maxPage, pageNumber), 0);
+    pageNumber = Math.max(pageNumber, 0);
+    setStartNum(Math.max(pageNumber - 1, 0));
     currPage = pageNumber;
     paginate(pageNumber);
   }
 
   const pageNumbers = [];
-  const [startNum, setStartNum] = useState(1);
-
-  for (let i = startNum; i <= Math.min(Math.ceil(totalPosts / postsPerPage), startNum + 2); i++) {
+  const [startNum, setStartNum] = useState(0);
+   
+  
+  var maxI = 2
+  // console.log('check type of data')
+  // console.log( typeof getData(startNum+1))
+  if (getData(startNum+1) === null || getData(startNum+1) === undefined){
+    // console.log(  getData(startNum+1))
+    maxI = 0;
+  }
+  else{
+    if(getData(startNum+2) === null|| getData(startNum+2) === undefined){
+      // console.log( typeof getData(startNum+2))
+      // console.log( getData(startNum+1))
+      maxI = 1
+    }
+  }
+  // Math.min(Math.ceil(totalPosts / postsPerPage), startNum + 2)
+  for (let i = startNum; i <= startNum+maxI ; i++) {
+    //console.log('add',i);
     pageNumbers.push(i);
   }
   return (
@@ -29,7 +56,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
                 <li key={number} className='page-item'>
                     <a onClick={() => {selectPage(number)}} href='#'
                      className={currPage == {number} ? 'active' : ''}>
-                    {number}
+                    {number+1}
                     </a>
                 </li>
                 ))}
