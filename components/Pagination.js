@@ -13,7 +13,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
   //             sets the pagination
   const selectPage = (pageNumber) => {
     //this if stament doesn't work need to figure it out :(
-    if (getData(pageNumber) === null || getData(pageNumber) === undefined){
+    if (getData(pageNumber) === null || getData(pageNumber) === undefined || getData(pageNumber).length === 0){
       pageNumber = pageNumber-1;
     }
     // let maxPage = Math.ceil(totalPosts / postsPerPage);
@@ -31,12 +31,12 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
   var maxI = 2
   // console.log('check type of data')
   // console.log( typeof getData(startNum+1))
-  if (getData(startNum+1) === null || getData(startNum+1) === undefined){
+  if (getData(startNum+1).length === 0){
     // console.log(  getData(startNum+1))
     maxI = 0;
   }
   else{
-    if(getData(startNum+2) === null|| getData(startNum+2) === undefined){
+    if(getData(startNum+2).length === 0){
       // console.log( typeof getData(startNum+2))
       // console.log( getData(startNum+1))
       maxI = 1
