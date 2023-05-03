@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState , useRef, useEffect} from 'react';
 import Layout from './Layout';
 
 
 const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
-
-  const getData = async (i) => {
-    const response = await fetch(`/api/posts?currPage=${i}`);
+  const pageNumbers = [];
+  const [startNum, setStartNum] = useState(0);
+  let nextFeed = useRef([0]);
+  // updateRef: update the ref that save the feed of the next possible page 
+  const updateRef = async (i) => {
+    const response = await fetch(`/api/posts?currPage=${i+1}`);
     const data = await response.json();
-    data.posts;
+    nextFeed.current = data.posts;
   };
+  useEffect(()=>{
+    updateRef(currPage);
+  });
   // selectPage: sets 'currPage' to be the current page number
   //             sets the pagination
   const selectPage = (pageNumber) => {
-    if (getData(pageNumber) === null || getData(pageNumber) === undefined || getData(pageNumber).length === 0){
+    if(pageNumber-1 === currPage && nextFeed.current.length === 0){
       pageNumber = pageNumber-1;
     }
     // let maxPage = Math.ceil(totalPosts / postsPerPage);
@@ -23,27 +29,13 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
     paginate(pageNumber);
   }
 
-  const pageNumbers = [];
-  const [startNum, setStartNum] = useState(0);
-   
   
-  var maxI = 2
-  // console.log('check type of data')
-  // console.log( typeof getData(startNum+1))
-  if (getData(startNum+1).length === 0){
-    // console.log(  getData(startNum+1))
-    maxI = 0;
-  }
-  else{
-    if(getData(startNum+2).length === 0){
-      // console.log( typeof getData(startNum+2))
-      // console.log( getData(startNum+1))
-      maxI = 1
-    }
+  var offset =  2;
+  if(nextFeed.current.length === 0){
+    offset = startNum===0? 0 : 1
   }
   // Math.min(Math.ceil(totalPosts / postsPerPage), startNum + 2)
-  for (let i = startNum; i <= startNum+maxI ; i++) {
-    //console.log('add',i);
+  for (let i = startNum; i <= startNum+offset ; i++) {
     pageNumbers.push(i);
   }
   return (
@@ -61,6 +53,8 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
                 ))}
             </ul>
             <button className='pagination' onClick={() => selectPage(currPage + 1)}> next </button>
+            <h2>you are now in page{currPage+1} </h2>
+            <h2>number of feedin page {currPage+2} are {nextFeed.current.length}</h2>
         </div>
     <style jsx>{`
         .align-center button{

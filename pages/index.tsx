@@ -51,6 +51,7 @@ const Blog: React.FC<Props> = (props) => {
     };
     sendPageNumber();
   }, [currentPage]);
+  console.log('hi');
 
   // Change page
   const paginate = (pageNumber: React.SetStateAction<number>) => {

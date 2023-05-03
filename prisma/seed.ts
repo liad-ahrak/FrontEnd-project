@@ -2,14 +2,6 @@ import { PrismaClient, Prisma } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-var posts_arr = []
-for(let i=0; i<=100; i++){
-  posts_arr.push({
-      title: 'post number '+ i.toString,
-      content: ':)',
-      published: true,
-    })
-}
 
 const userData: Prisma.UserCreateInput[] = [
   {
@@ -59,7 +51,7 @@ const userData: Prisma.UserCreateInput[] = [
     name: 'Lihad',
     email: 'lihad@prisma.io',
     posts: {
-      create: //posts_arr,
+      create: 
       [
         {
           title: '1',
