@@ -12,7 +12,6 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
   // selectPage: sets 'currPage' to be the current page number
   //             sets the pagination
   const selectPage = (pageNumber) => {
-    //this if stament doesn't work need to figure it out :(
     if (getData(pageNumber) === null || getData(pageNumber) === undefined || getData(pageNumber).length === 0){
       pageNumber = pageNumber-1;
     }
@@ -54,7 +53,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
             <ul className='pagination'>
                 {pageNumbers.map(number => (
                 <li key={number} className='page-item'>
-                    <a onClick={() => {selectPage(number)}} href='#'
+                    <a onClick={() => {selectPage(number)}} //href='#'
                      className={currPage == {number} ? 'active' : ''}>
                     {number+1}
                     </a>

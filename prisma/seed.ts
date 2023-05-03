@@ -85,7 +85,7 @@ async function main() {
     })
     console.log(`Created user with id: ${user.id}`)
   }
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 100000; i++) {
     const user = {
       name: `lihad ${i}`,
       email: `lihad${i}@prisma.io`,
