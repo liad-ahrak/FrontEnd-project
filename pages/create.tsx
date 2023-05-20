@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
 import { useSession } from "next-auth/react";
+import { useRef , useEffect} from "react";
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [video, setVideo] = useState("");
   const { data: session, status } = useSession();  
+  
+  
   let email = session?.user?.email;
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -42,6 +46,16 @@ const Draft: React.FC = () => {
             rows={8}
             value={content}
           />
+          <input 
+            type="file"
+            onChange={(e) => setVideo(e.target.value)}
+            placeholder="Video"
+            id="video" 
+            name="video" 
+            accept="video/*"
+          />
+          <br/>
+          <br/>
           <input disabled={!content || !title} type="submit" value="Create" />
           <a className="back" href="#" onClick={() => Router.push("/")}>
             or Cancel
