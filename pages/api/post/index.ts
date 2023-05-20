@@ -2,12 +2,11 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../lib/prisma'
 
 
-
 // POST /api/post
 // Required fields in body: title
 // Optional fields in body: content
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-  const { title, content, video, session, email} = req.body;
+  const { title, content, session, email} = req.body;
 
   
   if (session) {
