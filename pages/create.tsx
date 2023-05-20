@@ -10,6 +10,7 @@ const Draft: React.FC = () => {
   const [video, setVideo] = useState("");
   const { data: session, status } = useSession();  
   
+
   
   let email = session?.user?.email;
   const submitData = async (e: React.SyntheticEvent) => {
@@ -25,6 +26,21 @@ const Draft: React.FC = () => {
     } catch (error) {
       console.error(error);
     }
+    
+    e.preventDefault();
+    const formData = new FormData();
+    const file = video;
+    formData.append('inputFile', file);
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+    } catch (error) {
+      console.error(error);
+    }
+
   };
 
   return (
@@ -53,6 +69,7 @@ const Draft: React.FC = () => {
             id="video" 
             name="video" 
             accept="video/*"
+            value={video}
           />
           <br/>
           <br/>
@@ -93,5 +110,6 @@ const Draft: React.FC = () => {
     </Layout>
   );
 };
+
 
 export default Draft;
