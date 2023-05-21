@@ -33,10 +33,11 @@ export default async (req, res) => {
   });
 
   const file = data?.files?.inputFile.filepath;
-
+  const d = new Date();
+  let time = d.getTime();
   const response = await cloudinary.v2.uploader.upload(file, {
     resource_type: 'video',
-    public_id: 'my_video',
+    public_id: time,
   });
   return res.json(response);
 };
