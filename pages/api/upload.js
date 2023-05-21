@@ -1,11 +1,20 @@
 import cloudinary from 'cloudinary';
 import { IncomingForm } from 'formidable';
 
+//Lihi
+// cloudinary.config({
+//     cloudName: "dgkezthsz",
+//     apiKey: "143937565617482",
+//     apiSecret: "EITklreNB0GF_C3tFpS-4YsncBk"
+// });
+
+//Liad
 cloudinary.config({
-    cloudName: "dgkezthsz",
-    apiKey: "143937565617482",
-    apiSecret: "EITklreNB0GF_C3tFpS-4YsncBk"
+  cloud_name: "dsvjhuk25",
+  api_key: "116438151837789",
+  api_secret: "zB8Ue28lLdZT7RUvVNqSdkD4af8"
 });
+
 
 export const config = {
   api: {
@@ -25,15 +34,10 @@ export default async (req, res) => {
 
   const file = data?.files?.inputFile.path;
 
-  try {
-    const response = await cloudinary.v2.uploader.upload(file, {
-      resource_type: "video",
-      public_id: "my_video"
-    });
-    return res.json(response);
-  } catch (error) {
-    console.log("Error", error);
-    return res.json(error);
-  }
+  const response = await cloudinary.v2.uploader.upload(file, {
+    resource_type: 'video',
+    public_id: 'my_video',
+  });
+  return res.json(response);
 };
 

@@ -7,11 +7,15 @@ import { useRef , useEffect} from "react";
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [video, setVideo] = useState("");
   const { data: session, status } = useSession();  
+  const formData = new FormData();
   
+  const onChange = async (event) => {
+    event.preventDefault();
+    const file = event.target.files[0];
+    formData.append('inputFile', file);
+  };
 
-  
   let email = session?.user?.email;
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -26,21 +30,21 @@ const Draft: React.FC = () => {
     } catch (error) {
       console.error(error);
     }
-    
-    e.preventDefault();
-    const formData = new FormData();
-    const file = video;
-    formData.append('inputFile', file);
+
     try {
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData
       });
       const data = await response.json();
+      // setPublicId(data.public_id);
     } catch (error) {
-      console.error(error);
+      // setShowSpinner(false);
+    } finally {
+      // setShowSpinner(false);
+      // setShowVideo(true);
     }
-
+    
   };
 
   return (
@@ -64,12 +68,12 @@ const Draft: React.FC = () => {
           />
           <input 
             type="file"
-            onChange={(e) => setVideo(e.target.value)}
-            placeholder="Video"
-            id="video" 
-            name="video" 
+            onChange={onChange}//{(e) => setVideo(e.target.value)}
             accept="video/*"
-            value={video}
+            // placeholder="Video"
+            // id="video" 
+            // name="video" 
+            // value={video}
           />
           <br/>
           <br/>
