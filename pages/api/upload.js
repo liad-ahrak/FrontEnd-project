@@ -32,7 +32,7 @@ export default async (req, res) => {
     });
   });
 
-  const file = data?.files?.inputFile.path;
+  const file = data?.files?.inputFile.filepath;
 
   const response = await cloudinary.v2.uploader.upload(file, {
     resource_type: 'video',
