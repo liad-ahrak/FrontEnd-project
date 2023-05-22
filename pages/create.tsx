@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
 import { useSession } from "next-auth/react";
 import { useRef , useEffect} from "react";
-import { Spinner } from "../components/Spinner";
 import mongoose from 'mongoose';
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const { data: session, status } = useSession();  
+  const [disabledFile, setDisableFile] = useState(false);
   const formData = new FormData();
   
   const [showSpinner, setShowSpinner] = useState(false);
@@ -19,27 +19,28 @@ const Draft: React.FC = () => {
   
   //mongoDB part
   // const mongoose = require('mongoose');
-  const url = 'mongodb+srv://Lihiad:Lihiad@lihiad.vkfaddd.mongodb.net/?retryWrites=true&w=majority';
-  mongoose.set('strictQuery', false)
-  mongoose.connect(url)
-  const noteSchema = new mongoose.Schema({
-    user: String,
-    date_uploaded: Date,
-    post_id: Number,
-    video_Link: String
-  });
-  const MetaData = mongoose.model('MetaData', noteSchema);
+  // const url = 'mongodb+srv://Lihiad:Lihiad@lihiad.vkfaddd.mongodb.net/?retryWrites=true&w=majority';
+  // mongoose.set('strictQuery', false)
+  // mongoose.connect(url)
+  // const noteSchema = new mongoose.Schema({
+  //   user: String,
+  //   date_uploaded: Date,
+  //   post_id: Number,
+  //   video_Link: String
+  // });
+  // const MetaData = mongoose.model('MetaData', noteSchema);
 
   
   const onChange = async (event) => {
     event.preventDefault();
     const file = event.target.files[0];
     formData.append('inputFile', file);
+    // setDisableFile(true);
   };
 
   let email = session?.user?.email;
   const submitData = async (e: React.SyntheticEvent) => {
-    // setShowSpinner(true);
+    setShowSpinner(true);
     e.preventDefault();
     try {
       const body = { title, content, session, email };
@@ -63,9 +64,9 @@ const Draft: React.FC = () => {
         const data = await responseVideo.json();
         // setPublicId(data.public_id);
       } catch (error) {
-        // setShowSpinner(false);
+        setShowSpinner(false);
       } finally {
-        // setShowSpinner(false);
+        setShowSpinner(false);
         // setShowVideo(true);
       }
     }
@@ -86,41 +87,46 @@ const Draft: React.FC = () => {
 
   return (
     <Layout>
-      <div>
-        <Spinner displayed={showSpinner} />
-        <form onSubmit={submitData}>
-          <h1>New Draft</h1>
-          <input
-            autoFocus
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title"
-            type="text"
-            value={title}
-          />
-          <textarea
-            cols={50}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Content"
-            rows={8}
-            value={content}
-          />
-          <input 
-            type="file"
-            onChange={onChange}//{(e) => setVideo(e.target.value)}
-            accept="video/*"
-            // placeholder="Video"
-            // id="video" 
-            // name="video" 
-            // value={video}
-          />
-          <br/>
-          <br/>
-          <input disabled={!content || !title} type="submit" value="Create" />
-          <a className="back" href="#" onClick={() => Router.push("/")}>
-            or Cancel
-          </a>
-        </form>
-      </div>
+      {!showSpinner ?
+        <div>
+          <form onSubmit={submitData}>
+            <h1>New Draft</h1>
+            <input
+              autoFocus
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Title"
+              type="text"
+              value={title}
+            />
+            <textarea
+              cols={50}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Content"
+              rows={8}
+              value={content}
+            />
+            <input 
+              type="file"
+              onChange={onChange}//{(e) => setVideo(e.target.value)}
+              accept="video/*"
+              // disabled = {disabledFile}
+              // placeholder="Video"
+              // id="video" 
+              // name="video" 
+              // value={video}
+            />
+            <br/>
+            <br/>
+            <input disabled={!content || !title} type="submit" value="Create" />
+            <a className="back" href="#" onClick={() => Router.push("/")}>
+              or Cancel
+            </a>
+          </form>
+        </div>
+        :
+        <h1>uploading</h1>
+      }
+      
       <style jsx>{`
         .page {
           background: white;
