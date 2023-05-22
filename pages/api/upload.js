@@ -39,6 +39,11 @@ export default async (req, res) => {
     resource_type: 'video',
     public_id: time,
   });
-  return res.json(response);
+  const url = cloudinary.url(time,{
+    width: 100,
+    height: 150,
+    Crop: 'fill'
+  });
+  return res.json(url);
 };
 

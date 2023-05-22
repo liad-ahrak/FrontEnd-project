@@ -4,6 +4,8 @@ import Router from "next/router";
 import { useSession } from "next-auth/react";
 import { useRef , useEffect} from "react";
 import mongoose from 'mongoose';
+//import {Spinner} from '../components/Spinner';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -124,7 +126,11 @@ const Draft: React.FC = () => {
           </form>
         </div>
         :
-        <h1>uploading</h1>
+        <div className="uploading_spinner">
+          <h1>uploading</h1>
+          <ClipLoader color={'#fff'} size={150}/>
+        </div>
+        
       }
       
       <style jsx>{`
@@ -153,6 +159,10 @@ const Draft: React.FC = () => {
 
         .back {
           margin-left: 1rem;
+        }
+
+        .uploading_spinner{
+          text-align: center;
         }
       `}</style>
     </Layout>
