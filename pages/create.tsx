@@ -2,9 +2,6 @@ import React, { useState, Suspense } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
 import { useSession } from "next-auth/react";
-import { useRef , useEffect} from "react";
-import mongoose from 'mongoose';
-//import {Spinner} from '../components/Spinner';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 const Draft: React.FC = () => {
@@ -15,29 +12,14 @@ const Draft: React.FC = () => {
   const formData = new FormData();
   
   const [showSpinner, setShowSpinner] = useState(false);
-  // const [videoPublicId, setPublicId] = useState("");
-  // const [postId, setPostId] = useState("");
+  let videoURL = "";
+  let postId = "";
 
-  
-  //mongoDB part
-  // const mongoose = require('mongoose');
-  // const url = 'mongodb+srv://Lihiad:Lihiad@lihiad.vkfaddd.mongodb.net/?retryWrites=true&w=majority';
-  // mongoose.set('strictQuery', false)
-  // mongoose.connect(url)
-  // const noteSchema = new mongoose.Schema({
-  //   user: String,
-  //   date_uploaded: Date,
-  //   post_id: Number,
-  //   video_Link: String
-  // });
-  // const MetaData = mongoose.model('MetaData', noteSchema);
 
-  
   const onChange = async (event) => {
     event.preventDefault();
     const file = event.target.files[0];
     formData.append('inputFile', file);
-    // setDisableFile(true);
   };
 
   let email = session?.user?.email;
@@ -52,19 +34,23 @@ const Draft: React.FC = () => {
         body: JSON.stringify(body),
       });
       const data = await responsePost.json();
-      // setPostId(data.id);
+      postId = data.id;
       await Router.push("/drafts");
     } catch (error) {
       console.error(error);
     }
+
+
     if(formData.has('inputFile')){
+      
+      
       try {
         const responseVideo = await fetch("/api/upload", {
           method: "POST",
           body: formData
         });
         const data = await responseVideo.json();
-        // setPublicId(data.public_id);
+        videoURL = data;
       } catch (error) {
         setShowSpinner(false);
       } finally {
@@ -73,17 +59,25 @@ const Draft: React.FC = () => {
       }
     }
 
-    // try{
-    //   const d = new Date();
-
-    //   const metaDate = new MetaData({
-    //     user: session?.user?.name,
-    //     date_uploaded: d.getDate(),
-    //     post_id: postId,
-    //     video_Link: `https://res.cloudinary.com/dsvjhuk25/video/upload/v1684678468/${videoPublicId}.mp4`
-    //   });
-    // }catch (error) {
-    // }
+    // upload to mongoDB
+    try{
+      const d = new Date();
+      let user = session?.user?.name
+      let date_uploaded = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`
+      let post_id = postId
+      let video_Link = videoURL
+      const body = {user, date_uploaded}//, post_id, video_Link }
+      const responseDB = await fetch("/api/uploadDB", {
+        method: "POST",
+        body:  JSON.stringify(body),
+      });
+      const data = await responseDB.json();
+    } catch (error) {
+      setShowSpinner(false);
+    } finally {
+      setShowSpinner(false);
+      // setShowVideo(true);
+    };
     
   };
 
@@ -129,6 +123,7 @@ const Draft: React.FC = () => {
         <div className="uploading_spinner">
           <h1>uploading</h1>
           <ClipLoader color={'#fff'} size={150}/>
+          
         </div>
         
       }
