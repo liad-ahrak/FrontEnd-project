@@ -32,7 +32,10 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
   
   var offset =  2;
   if(nextFeed.current.length === 0){
-    offset = startNum===0? 0 : 1
+    offset = currPage===0? 0 : 1
+  }
+  if(nextFeed.current.length < 10){
+    offset = 1;
   }
   // Math.min(Math.ceil(totalPosts / postsPerPage), startNum + 2)
   for (let i = startNum; i <= startNum+offset ; i++) {
@@ -54,7 +57,9 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
             </ul>
             <button className='pagination' onClick={() => selectPage(currPage + 1)}> next </button>
             <h2>you are now in page{currPage+1} </h2>
-            <h2>number of feedin page {currPage+2} are {nextFeed.current.length}</h2>
+            <h2>number of feed in page {currPage+2} are {nextFeed.current.length}</h2>
+            {/* <h2>the offset is {nextFeed.current.length}</h2>
+            <h2>{currPage}</h2> */}
         </div>
     <style jsx>{`
         .align-center button{
