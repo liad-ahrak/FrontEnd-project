@@ -25,15 +25,14 @@ export default async (req, res) => {
   // switch (req.method)  {
     if (req.method === 'POST') {
       const { user, dateUploaded, postId, cloudinaryLink } = req.body;
-      const video = new MetaData({
+      const metadata = new MetaData({
         user,
         dateUploaded,
         postId,
         cloudinaryLink,
       });
-
       try {
-        await video.save();
+        await metadata.save();
         res.status(200).json({ message: 'Video metadata saved successfully' });
       } catch (error) {
         console.error("Error creating video metadata: ", error);
