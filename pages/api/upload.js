@@ -39,11 +39,15 @@ export default async (req, res) => {
     resource_type: 'video',
     public_id: time,
   });
-  const url = cloudinary.url(time,{
-    width: 100,
-    height: 150,
-    Crop: 'fill'
-  });
-  return res.json(url);
+  const url = cloudinary.url(time);
+  const secURL = response.secure_url;
+  // console.log('secURL', secURl)
+  // console.log('retiurn id',time);
+  // ,{
+  //   width: 100,
+  //   height: 150,
+  //   Crop: 'fill'
+  // });
+  return res.json(secURL);
 };
 

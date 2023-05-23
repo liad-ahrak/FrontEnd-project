@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from "react";
+import React, { useState, Suspense, useRef, useEffect } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
 import { useSession } from "next-auth/react";
@@ -14,9 +14,15 @@ const Draft: React.FC = () => {
   const [showSpinner, setShowSpinner] = useState(false);
   let videoURL = "";
   let postId = "";
+  const ref = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (ref.current){
+      ref.current.focus();
+    }
+  },[]);
 
-  const onChange = async (event) => {
+  const onChange = async (event: any) => {
     event.preventDefault();
     const file = event.target.files[0];
     formData.append('inputFile', file);
@@ -50,35 +56,59 @@ const Draft: React.FC = () => {
           body: formData
         });
         const data = await responseVideo.json();
-        videoURL = data;
+        console.log('return data',data)
+        videoURL = data;//`https://res.cloudinary.com/dsvjhuk25/video/upload/h_150,w_200/${data}.mp4`;
       } catch (error) {
         setShowSpinner(false);
       } finally {
         setShowSpinner(false);
         // setShowVideo(true);
       }
+  
+      // upload to mongoDB
+      try{
+        // const d = new Date();
+        // let user = session?.user?.name
+        // let date_uploaded = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`
+        // let post_id = postId
+        // let video_Link = videoURL
+        // console.log('create', user, d, post_id, video_Link)
+        // // const body = {user, date_uploaded , post_id, video_Link }
+        // // const responseDB = await fetch("/api/uploadDB", {
+        // //   method: "POST",
+        // //   headers: { "Content-Type": "application/json" }, // Set the Content-Type header
+        // //   body:  JSON.stringify(body),
+        // // });
+        // // const data = await responseDB.json();
+        // const videoMetadata = {
+        //   user: user,
+        //   dateUploaded: d,
+        //   postId: post_id, 
+        //   cloudinaryLink: video_Link, 
+        // };
+        // const metadataResponse = await fetch("/api/uploadDB", {
+        //   method: "POST",
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify(videoMetadata),
+        // });
+        const videoMetadata = {
+          user: session?.user?.name,
+          dateUploaded: new Date(),
+          postId: postId, 
+          cloudinaryLink: videoURL, 
+        };
+        const metadataResponse = await fetch("/api/uploadDB", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(videoMetadata),
+        });
+      } catch (error) {
+        setShowSpinner(false);
+      } finally {
+        setShowSpinner(false);
+        // setShowVideo(true);
+      };
     }
-
-    // upload to mongoDB
-    try{
-      const d = new Date();
-      let user = session?.user?.name
-      let date_uploaded = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`
-      let post_id = postId
-      let video_Link = videoURL
-      const body = {user, date_uploaded}//, post_id, video_Link }
-      const responseDB = await fetch("/api/uploadDB", {
-        method: "POST",
-        body:  JSON.stringify(body),
-      });
-      const data = await responseDB.json();
-    } catch (error) {
-      setShowSpinner(false);
-    } finally {
-      setShowSpinner(false);
-      // setShowVideo(true);
-    };
-    
   };
 
   return (
@@ -88,7 +118,8 @@ const Draft: React.FC = () => {
           <form onSubmit={submitData}>
             <h1>New Draft</h1>
             <input
-              autoFocus
+              ref={ref}
+              // autoFocus
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Title"
               type="text"
