@@ -6,27 +6,26 @@ const url =
 mongoose.set('strictQuery',false)
 mongoose.connect(url)
 
-const videoSchema = new mongoose.Schema({
+const metaDataSchema = new mongoose.Schema({
   user: String,
   dateUploaded: Date,
   postId: String,
   cloudinaryLink: String,
 });
 
-let Video;
+let MetaData;
 
 try {
-  Video = mongoose.model('Video');
+  MetaData = mongoose.model('MetaData');
 } catch (error) {
-  Video = mongoose.model('Video', videoSchema);
+  MetaData = mongoose.model('MetaData', metaDataSchema);
 }
 
 export default async (req, res) => {
-  switch (req.method)  {
-    case 'POST': {
+  // switch (req.method)  {
+    if (req.method === 'POST') {
       const { user, dateUploaded, postId, cloudinaryLink } = req.body;
-
-      const video = new Video({
+      const video = new MetaData({
         user,
         dateUploaded,
         postId,
@@ -40,12 +39,13 @@ export default async (req, res) => {
         console.error("Error creating video metadata: ", error);
         res.status(500).json({ message: 'Error saving video metadata' });
       }
-      break;
+      // break;
     } 
-    case 'GET':{
+    // case 'GET':
+    else{
       const postId = req.query;
       try{
-        const video = await Video.findOne(postId);
+        const video = await MetaData.findOne(postId);
         if (!video) {
           res.status(404).json({ message: 'No video found' });
         } else {
@@ -55,7 +55,7 @@ export default async (req, res) => {
         console.error( error);
         res.status(500).json({ message: 'Error retrieving video metadata' });
       }
-      break;
+      // break;
     }
-  }
+  // }
 };
