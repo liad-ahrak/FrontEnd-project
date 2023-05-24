@@ -22,10 +22,10 @@ const App = ({ Component, pageProps }: AppProps) => {
   }, []);
   return (
     <div>
-      {/* <h5>{isOnline ? '✅ Online' : '❌ Disconnected'}</h5> */}
       <SessionProvider session={pageProps.session}>
         <Component {...pageProps} />
       </SessionProvider>
+      <h5>{isOnline ? '✅ Online' : '❌ Disconnected'}</h5>
     </div>
   );
 };
