@@ -2,13 +2,13 @@ import { FiCommand } from "react-icons/fi";
 
 export function Spinner (){
     return (
-        <div className="App">
+        <div className="Spinner">
           <h1>Uploading...</h1>
           <br />
           
           <FiCommand className="loading-icon" />
           <style jsx>{`
-            .App {
+            .Spinner {
                 font-family: sans-serif;
                 text-align: center;
               }

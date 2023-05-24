@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
@@ -36,6 +36,7 @@ const Blog: React.FC<Props> = (props) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [postsPerPage, setPostPerPage] = useState(10);
   const [feed, setFeed] = React.useState(props.feed);
+
 
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
