@@ -6,11 +6,16 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
   const pageNumbers = [];
   const [startNum, setStartNum] = useState(0);
   let nextFeed = useRef([0]);
+  //we will use this ref only for chack for the first page
+  let next2Feed = useRef([0]);
   // updateRef: update the ref that save the feed of the next possible page 
   const updateRef = async (i) => {
     const response = await fetch(`/api/posts?currPage=${i+1}`);
     const data = await response.json();
     nextFeed.current = data.posts;
+    const response2 = await fetch(`/api/posts?currPage=${i+2}`);
+    const data2 = await response2.json();
+    next2Feed.current = data2.posts;
   };
   useEffect(()=>{
     updateRef(currPage);
@@ -34,7 +39,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
   if(nextFeed.current.length === 0){
     offset = currPage===0? 0 : 1
   }
-  if(nextFeed.current.length < 10){
+  if(currPage === 0 && next2Feed.current.length === 0  ){
     offset = 1;
   }
   // Math.min(Math.ceil(totalPosts / postsPerPage), startNum + 2)
@@ -56,10 +61,10 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
                 ))}
             </ul>
             <button className='pagination' onClick={() => selectPage(currPage + 1)}> next </button>
-            <h2>you are now in page{currPage+1} </h2>
+            <h2>you are now in page {currPage+1} </h2>
             <h2>number of feed in page {currPage+2} are {nextFeed.current.length}</h2>
-            {/* <h2>the offset is {nextFeed.current.length}</h2>
-            <h2>{currPage}</h2> */}
+            {/* <h2>the offset is {offset}</h2>
+            <h2>number of feed in page {currPage+2} are {next2Feed.current.length}</h2> */}
         </div>
     <style jsx>{`
         .align-center button{
