@@ -6,7 +6,7 @@ import ReactSwitch from 'react-switch';
 export const ThemeContext = createContext({});
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('light');
   const [isOnline, setIsOnline] = useState(true);
   useEffect(() => {
     function handleOnline() {
