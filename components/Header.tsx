@@ -35,6 +35,12 @@ const Header: React.FC = () => {
         a + a {
           margin-left: 1rem;
         }
+        #light {
+            background: rgba(0, 0, 0, 0.05);
+          }
+          #dark  {
+            background: rgba(0, 0, 0, 0.55);
+          }
       `}</style>
     </div>
   );
@@ -66,6 +72,12 @@ const Header: React.FC = () => {
 
           a + a {
             margin-left: 1rem;
+          }
+          #light {
+            background: rgba(0, 0, 0, 0.05);
+          }
+          #dark  {
+            background: rgba(0, 0, 0, 0.55);
           }
         `}</style>
       </div>
@@ -108,6 +120,12 @@ const Header: React.FC = () => {
             padding: 0.5rem 1rem;
             border-radius: 3px;
           }
+          #light {
+            background: rgba(0, 0, 0, 0.05);
+          }
+          #dark  {
+            background: rgba(0, 0, 0, 0.55);
+          }
         `}</style>
       </div>
     );
@@ -141,6 +159,12 @@ const Header: React.FC = () => {
 
           a + a {
             margin-left: 1rem;
+          }
+          #light {
+            background: rgba(0, 0, 0, 0.05);
+          }
+          #dark  {
+            background: rgba(0, 0, 0, 0.55);
           }
         `}</style>
       </div>
@@ -188,6 +212,12 @@ const Header: React.FC = () => {
           button {
             border: none;
           }
+          #light div {
+            background: rgba(0, 0, 0, 0.05);
+          }
+          #dark  div{
+            background: rgba(0, 0, 0, 0.55);
+          }
         `}</style>
       </div>
     );
@@ -202,6 +232,12 @@ const Header: React.FC = () => {
           display: flex;
           padding: 2rem;
           align-items: center;
+        }
+        #light {
+          background: rgba(0, 0, 0, 0.05);
+        }
+        #dark  {
+          background: rgba(0, 0, 0, 0.55);
         }
       `}</style>
     </nav>

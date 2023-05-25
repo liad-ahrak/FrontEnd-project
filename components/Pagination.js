@@ -107,7 +107,13 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
         .pagination a:hover:not(.active) {
             background-color: #ddd;
         }
-        
+        #light a{
+          background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        #dark a{
+          background-color: rgba(0, 0, 0, 0.55);
+        }        
       `}</style>
     </nav>
   );
