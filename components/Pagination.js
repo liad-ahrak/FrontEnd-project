@@ -62,7 +62,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currPage }) => {
             </ul>
             <button className='pagination' onClick={() => selectPage(currPage + 1)}> next </button>
             <h2>you are now in page {currPage+1} </h2>
-            <h2>number of feed in page {currPage+2} are {nextFeed.current.length}</h2>
+            <h2>number of posts in page {currPage+2} are {nextFeed.current.length}</h2>
             {/* <h2>the offset is {offset}</h2>
             <h2>number of feed in page {currPage+2} are {next2Feed.current.length}</h2> */}
         </div>

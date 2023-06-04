@@ -67,30 +67,6 @@ const Draft: React.FC = () => {
   
       // upload to mongoDB
       try{
-        // const d = new Date();
-        // let user = session?.user?.name
-        // let date_uploaded = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`
-        // let post_id = postId
-        // let video_Link = videoURL
-        // console.log('create', user, d, post_id, video_Link)
-        // // const body = {user, date_uploaded , post_id, video_Link }
-        // // const responseDB = await fetch("/api/uploadDB", {
-        // //   method: "POST",
-        // //   headers: { "Content-Type": "application/json" }, // Set the Content-Type header
-        // //   body:  JSON.stringify(body),
-        // // });
-        // // const data = await responseDB.json();
-        // const videoMetadata = {
-        //   user: user,
-        //   dateUploaded: d,
-        //   postId: post_id, 
-        //   cloudinaryLink: video_Link, 
-        // };
-        // const metadataResponse = await fetch("/api/uploadDB", {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify(videoMetadata),
-        // });
         const videoMetadata = {
           user: session?.user?.name,
           dateUploaded: new Date(),
