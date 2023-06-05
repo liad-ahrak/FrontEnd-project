@@ -41,13 +41,6 @@ export default async (req, res) => {
   });
   const url = cloudinary.url(time);
   const secURL = response.secure_url;
-  // console.log('secURL', secURl)
-  // console.log('retiurn id',time);
-  // ,{
-  //   width: 100,
-  //   height: 150,
-  //   Crop: 'fill'
-  // });
   return res.json(secURL);
 };
 

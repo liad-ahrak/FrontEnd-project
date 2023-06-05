@@ -6,32 +6,75 @@ import ClipLoader from 'react-spinners/ClipLoader';
 
 
 const Signup = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const shoot = async () => {
+    if (password != repeatPassword){
+      alert('please make sure you repeated the password correctly')
+    }
+
+    // After fizing DB:
+
+    // else{
+    //   try {
+    //     // TODO: turn password into Token
+    //     const body = { name, email, password };
+    //     const responsePost = await fetch(`/api/uploadUsers`, {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify(body),
+    //     });
+    //     const data = await responsePost.json();
+    //     // postId = data.id;
+    //     await Router.push("/drafts");
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
+
+  }
+
   return (
     <Layout>
-           
-
         <form>
           <div>
             <h1>Sign Up</h1>
             <p>Please fill in this form to create an account.</p>
 
             <label><b>Name</b></label>
-            <input type="text" name="name" required/> 
+            <input type="text" name="name" 
+            onChange={(e) => setName(e.target.value)}
+            value={name} 
+            required/> 
 
             <label><b>Email</b></label>
-            <input type="text" name="email" required/> 
+            <input type="text" name="email" 
+            onChange={(e) => setEmail(e.target.value)}
+            value={email} 
+            required/> 
 
             <label><b>Password</b></label>
-            <input type="password" name="psw" required/> 
+            <input 
+            type="password" 
+            name="psw" 
+            onChange={(e) => setPassword(e.target.value)}
+            value={password} 
+            required/> 
             
             <label ><b>Repeat Password</b></label>
-            <input type="password" name="psw-repeat" required/>
+            <input 
+            type="password" 
+            name="psw-repeat" 
+            onChange={(e) => setRepeatPassword(e.target.value)}
+            value={repeatPassword} required/>
           
             
             <p>By creating an account you agree to our <a href="/TokenAuth/conditions">Terms & Privacy</a>.</p>
 
             <div>              
-              <button type="submit">Sign Up</button>
+              <button type="submit" onClick={shoot} >Sign Up</button>
             </div>
           </div>
         </form>
