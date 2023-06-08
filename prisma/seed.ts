@@ -1,12 +1,17 @@
 import { PrismaClient, Prisma } from '@prisma/client'
 
 const prisma = new PrismaClient()
+const bcrypt = require("bcrypt");
 
+const passwordHash = "$2a$10$atLR6eJ3fM70IchvZ6OixuYID.EDnSxdSxQfASAcpw6YOpht3XQK2";
+//it is hash of 123456
 
 const userData: Prisma.UserCreateInput[] = [
   {
+    username: 'Alice',
     name: 'Alice',
     email: 'alice@prisma.io',
+    password: passwordHash,
     posts: {
       create: [
         {
@@ -18,8 +23,10 @@ const userData: Prisma.UserCreateInput[] = [
     },
   },
   {
+    username: 'Nilu',
     name: 'Nilu',
     email: 'nilu@prisma.io',
+    password: passwordHash,
     posts: {
       create: [
         {
@@ -31,8 +38,10 @@ const userData: Prisma.UserCreateInput[] = [
     },
   },
   {
+    username: 'Mahmoud',
     name: 'Mahmoud',
     email: 'mahmoud@prisma.io',
+    password: passwordHash,
     posts: {
       create: [
         {
@@ -48,8 +57,10 @@ const userData: Prisma.UserCreateInput[] = [
     },
   },
   {
+    username: 'Lihad',
     name: 'Lihad',
     email: 'lihad@prisma.io',
+    password: passwordHash,
     posts: {
       create: 
       [
@@ -77,70 +88,72 @@ async function main() {
     })
     console.log(`Created user with id: ${user.id}`)
   }
-  for (let i = 0; i < 1000/*00*/; i++) {
-    const user = {
-      name: `lihad ${i}`,
-      email: `lihad${i}@prisma.io`,
-      posts: {
-        create: [
-          {
-            title: `Post 1 of user lihad${i}`,
-            content: 'https://www.github.com/prisma/prisma/discussions',
-            published: true,
-          },
-          {
-            title: `Post 2 of user lihad${i}`,
-            content: 'https://www.github.com/prisma/prisma/discussions',
-            published: true,
-          },
-          {
-            title: `Post 3 of user lihad${i}`,
-            content: 'https://www.github.com/prisma/prisma/discussions',
-            published: true,
-          },
-          {
-            title: `Post 4 of user lihad${i}`,
-            content: 'https://www.github.com/prisma/prisma/discussions',
-            published: true,
-          },
-          {
-            title: `Post 5 of user lihad${i}`,
-            content: 'https://www.github.com/prisma/prisma/discussions',
-            published: true,
-          },
-          {
-            title: `Post 6 of user lihad${i}`,
-            content: 'https://www.github.com/prisma/prisma/discussions',
-            published: true,
-          },
-          {
-            title: `Post 7 of user lihad${i}`,
-            content: 'https://www.github.com/prisma/prisma/discussions',
-            published: true,
-          },
-          {
-            title: `Post 8 of user lihad${i}`,
-            content: 'https://www.github.com/prisma/prisma/discussions',
-            published: true,
-          },
-          {
-            title: `Post 9 of user lihad${i}`,
-            content: 'https://www.github.com/prisma/prisma/discussions',
-            published: true,
-          },
-          {
-            title: `Post 10 of user lihad${i}`,
-            content: 'https://www.github.com/prisma/prisma/discussions',
-            published: true,
-          },
-        ],
-      },
-    }
-    const newUser = await prisma.user.create({
-      data: user,
-    })
-    console.log(`Created user with id: ${newUser.id}`)
-  }
+  // for (let i = 0; i < 1000/*00*/; i++) {
+  //   const user = {
+  //     userName: `lihad ${i}`,
+  //     name: `lihad ${i}`,
+  //     email: `lihad${i}@prisma.io`,
+  //     password: '123456',
+  //     posts: {
+  //       create: [
+  //         {
+  //           title: `Post 1 of user lihad${i}`,
+  //           content: 'https://www.github.com/prisma/prisma/discussions',
+  //           published: true,
+  //         },
+  //         {
+  //           title: `Post 2 of user lihad${i}`,
+  //           content: 'https://www.github.com/prisma/prisma/discussions',
+  //           published: true,
+  //         },
+  //         {
+  //           title: `Post 3 of user lihad${i}`,
+  //           content: 'https://www.github.com/prisma/prisma/discussions',
+  //           published: true,
+  //         },
+  //         {
+  //           title: `Post 4 of user lihad${i}`,
+  //           content: 'https://www.github.com/prisma/prisma/discussions',
+  //           published: true,
+  //         },
+  //         {
+  //           title: `Post 5 of user lihad${i}`,
+  //           content: 'https://www.github.com/prisma/prisma/discussions',
+  //           published: true,
+  //         },
+  //         {
+  //           title: `Post 6 of user lihad${i}`,
+  //           content: 'https://www.github.com/prisma/prisma/discussions',
+  //           published: true,
+  //         },
+  //         {
+  //           title: `Post 7 of user lihad${i}`,
+  //           content: 'https://www.github.com/prisma/prisma/discussions',
+  //           published: true,
+  //         },
+  //         {
+  //           title: `Post 8 of user lihad${i}`,
+  //           content: 'https://www.github.com/prisma/prisma/discussions',
+  //           published: true,
+  //         },
+  //         {
+  //           title: `Post 9 of user lihad${i}`,
+  //           content: 'https://www.github.com/prisma/prisma/discussions',
+  //           published: true,
+  //         },
+  //         {
+  //           title: `Post 10 of user lihad${i}`,
+  //           content: 'https://www.github.com/prisma/prisma/discussions',
+  //           published: true,
+  //         },
+  //       ],
+  //     },
+  //   }
+  //   const newUser = await prisma.user.create({
+  //     data: user,
+  //   })
+  //   console.log(`Created user with id: ${newUser.id}`)
+  // }
   console.log(`Seeding finished.`)
 }
 

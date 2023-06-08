@@ -5,7 +5,7 @@ import Router from "next/router";
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const formData = new FormData();
+ 
   const submitData = async (e: React.SyntheticEvent) => {
     
   };

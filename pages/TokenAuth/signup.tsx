@@ -3,18 +3,53 @@ import Layout from "../../components/Layout";
 import Router from "next/router";
 import { useSession } from "next-auth/react";
 import ClipLoader from 'react-spinners/ClipLoader';
+import { on } from "events";
 
 
 const Signup = () => {
   const [name, setName] = useState("");
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  // const [profilePicture, setProfilePicture] = useState("");
+  // const imgFormData = typeof FormData !== "undefined" ? new FormData() : null;
+  const [sendSign, setSendSign] = useState(false);
   const shoot = async () => {
     if (password != repeatPassword){
       alert('please make sure you repeated the password correctly')
     }
-
+    else{
+      try {
+        // TODO: turn password into Token
+        const body = { userName, password, email, name };
+        const responsePost = await fetch(`/api/newUser`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await responsePost.json();
+        const status = await responsePost.status;
+        
+        if (status == 201){
+          alert(data.message) 
+          console.log('you have successfully signed up')
+          await Router.push("/TokenAuth/login");
+          
+        }
+        else{  
+          if(status == 400){
+            alert(data.message);
+          }
+          else{alert(`omething went wrong, please try again later ${status}`);}
+        }
+        // postId = data.id;
+        // await Router.push("/drafts");
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  
     // After fizing DB:
 
     // else{
@@ -35,6 +70,16 @@ const Signup = () => {
     // }
 
   }
+  // const onChangeProfileP = (event) => {
+  //   event.preventDefault();
+  //   if (typeof FormData !== "undefined") {
+  //     const file = event.target.files[0];
+  //     imgFormData.append('inputFile', file);
+  //   } else {
+  //     console.error("FormData is not supported in this environment.");
+  //   }
+  // };
+  
 
   return (
     <Layout>
@@ -48,6 +93,13 @@ const Signup = () => {
             onChange={(e) => setName(e.target.value)}
             value={name} 
             required/> 
+
+            <label><b>User Name</b></label>
+            <input type="text" name="userName" 
+            onChange={(e) => setUserName(e.target.value)}
+            value={userName} 
+            required/> 
+
 
             <label><b>Email</b></label>
             <input type="text" name="email" 
@@ -69,6 +121,13 @@ const Signup = () => {
             name="psw-repeat" 
             onChange={(e) => setRepeatPassword(e.target.value)}
             value={repeatPassword} required/>
+
+            {/* <input
+            type="file"
+            name = "profilePicture"
+            accept="image/*"
+            onChange={onChangeProfileP}            
+            /> */}
           
             
             <p>By creating an account you agree to our <a href="/TokenAuth/conditions">Terms & Privacy</a>.</p>

@@ -50,10 +50,12 @@ model Session {
 
 model User {
   id            Int       @id @default(autoincrement())
-  name          String?
+  username      String
+  password      String
   email         String?   @unique
+  name          String?
+  photo         String?
   emailVerified DateTime? @map("email_verified")
-  image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   posts         Post[]
