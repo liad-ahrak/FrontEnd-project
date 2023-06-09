@@ -1,13 +1,40 @@
 import React, { useState, Suspense, useRef, useEffect, use } from "react";
 import Layout from "../../components/Layout";
 import Router from "next/router";
+const jwt = require('jsonwebtoken')
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
  
   const submitData = async (e: React.SyntheticEvent) => {
-    
+    e.preventDefault();
+    try{
+      const body = { email, password };
+        const responsePost = await fetch(`/api/loginUser`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+      const data = await responsePost.json();
+      // alert("this is the token " + data.token)
+      const token = data.token;
+      alert("this is the token " + token)
+      // console.log(data)
+      localStorage.removeItem('test')
+      
+      // alert("this is the token from localStorage " + localStorage.getItem('test'))
+      // console.log("this is the token from localStorage " + tryToken)
+      alert("this is the tokenLogin from localStorage before saveing " + localStorage.getItem('tokenLogin'))
+      localStorage.setItem('tokenLogin', data.token);
+      alert("this is the tokenLogin from localStorage after saving " + localStorage.getItem('tokenLogin'))
+      // tryToken = localStorage.getItem('token');
+      // console.log("this is the token from localStorage after saving " + tryToken)
+    }
+    catch (error) {
+      console.error(error);
+    }    
+
   };
 
   return (
@@ -18,10 +45,10 @@ const Login: React.FC = () => {
             <h1>Login</h1>
             <input
               autoFocus
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="username"
               type="text"
-              value={username}
+              value={email}
 
             />
             <input
@@ -32,7 +59,7 @@ const Login: React.FC = () => {
             <br/>
             <br/>
             <div>              
-              <button type="submit" value="Login" disabled={!username || !password}>Sign Up</button>
+              <button type="submit" value="Login" disabled={!email || !password}>Sign Up</button>
             </div>
           </form>
         </div>

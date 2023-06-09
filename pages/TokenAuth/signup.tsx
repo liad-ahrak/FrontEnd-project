@@ -15,13 +15,12 @@ const Signup = () => {
   // const [profilePicture, setProfilePicture] = useState("");
   // const imgFormData = typeof FormData !== "undefined" ? new FormData() : null;
   const [sendSign, setSendSign] = useState(false);
-  const shoot = async () => {
+  const shoot = async (e: React.SyntheticEvent) =>{
     if (password != repeatPassword){
       alert('please make sure you repeated the password correctly')
     }
     else{
       try {
-        // TODO: turn password into Token
         const body = { userName, password, email, name };
         const responsePost = await fetch(`/api/newUser`, {
           method: "POST",

@@ -15,15 +15,10 @@
   ],
   "rootMainFiles": [],
   "pages": {
-    "/": [
+    "/TokenAuth/login": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/index.js"
-    ],
-    "/TokenAuth/signup": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/TokenAuth/signup.js"
+      "static/chunks/pages/TokenAuth/login.js"
     ],
     "/_app": [
       "static/chunks/webpack.js",
