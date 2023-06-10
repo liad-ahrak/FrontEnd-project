@@ -10,19 +10,19 @@ const Header: React.FC = () => {
     router.pathname === pathname;
 
   const {data: session, status} = useSession();
-  const tokenLogin = localStorage.getItem('tokenLogin');
-  alert("this is the tokenLogin header: " + tokenLogin);
-  const getToken = (tokenLogin: string | null ) => {
-    try{
-      return jwt.verify(tokenLogin, 'secret');
-    }
-    catch (error) {
-      alert("this is the error from getToken: " + error);
-      return null;
-    }
-  }
-  const verToken = getToken(tokenLogin);
-  alert("this is the verToken header: " + verToken);
+  // const tokenLogin = localStorage.getItem('tokenLogin');
+  // alert("this is the tokenLogin header: " + tokenLogin);
+  // const getToken = (tokenLogin: string | null ) => {
+  //   try{
+  //     return jwt.verify(tokenLogin, 'secret');
+  //   }
+  //   catch (error) {
+  //     alert("this is the error from getToken: " + error);
+  //     return null;
+  //   }
+  // }
+  // const verToken = getToken(tokenLogin);
+  // alert("this is the verToken header: " + verToken);
   
 
 
