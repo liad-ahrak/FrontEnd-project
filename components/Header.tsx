@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
+const jwt = require('jsonwebtoken')
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -9,6 +10,21 @@ const Header: React.FC = () => {
     router.pathname === pathname;
 
   const {data: session, status} = useSession();
+  const tokenLogin = localStorage.getItem('tokenLogin');
+  alert("this is the tokenLogin header: " + tokenLogin);
+  const getToken = (tokenLogin: string | null ) => {
+    try{
+      return jwt.verify(tokenLogin, 'secret');
+    }
+    catch (error) {
+      alert("this is the error from getToken: " + error);
+      return null;
+    }
+  }
+  const verToken = getToken(tokenLogin);
+  alert("this is the verToken header: " + verToken);
+  
+
 
   let left = (
     <div className="left">
@@ -47,58 +63,60 @@ const Header: React.FC = () => {
 
   let right = null;
 
-  if (status === 'loading') {
-    left = (
-      <div className="left">
-        <Link href="/" legacyBehavior>
-          <a className="bold" data-active={isActive("/")}>
-            Feed
-          </a>
-        </Link>
-        <style jsx>{`
-          .bold {
-            font-weight: bold;
-          }
+  // const token = getToken();
 
-          a {
-            text-decoration: none;
-            color: #000;
-            display: inline-block;
-          }
+  // if (status === 'loading') {
+  //   left = (
+  //     <div className="left">
+  //       <Link href="/" legacyBehavior>
+  //         <a className="bold" data-active={isActive("/")}>
+  //           Feed
+  //         </a>
+  //       </Link>
+  //       <style jsx>{`
+  //         .bold {
+  //           font-weight: bold;
+  //         }
 
-          .left a[data-active="true"] {
-            color: gray;
-          }
+  //         a {
+  //           text-decoration: none;
+  //           color: #000;
+  //           display: inline-block;
+  //         }
 
-          a + a {
-            margin-left: 1rem;
-          }
-          #light {
-            background: rgba(0, 0, 0, 0.05);
-          }
-          #dark  {
-            background: rgba(0, 0, 0, 0.55);
-          }
-        `}</style>
-      </div>
-    );
-    right = (
-      <div className="right">
-        <p>Validating session ...</p>
-        <style jsx>{`
-          .right {
-            margin-left: auto;
-          }
-        `}</style>
-      </div>
-    );
-  }
+  //         .left a[data-active="true"] {
+  //           color: gray;
+  //         }
+
+  //         a + a {
+  //           margin-left: 1rem;
+  //         }
+  //         #light {
+  //           background: rgba(0, 0, 0, 0.05);
+  //         }
+  //         #dark  {
+  //           background: rgba(0, 0, 0, 0.55);
+  //         }
+  //       `}</style>
+  //     </div>
+  //   );
+  //   right = (
+  //     <div className="right">
+  //       <p>Validating session ...</p>
+  //       <style jsx>{`
+  //         .right {
+  //           margin-left: auto;
+  //         }
+  //       `}</style>
+  //     </div>
+  //   );
+  // }
 
   if (!session) {
     right = (
       <div className="right">
         <Link href="/TokenAuth/login" legacyBehavior>
-          <a data-active={isActive("/signup")}>Log in</a>
+          <a data-active={isActive("/login")}>Log in</a>
         </Link>
         <Link href="/TokenAuth/signup" legacyBehavior>
           <a data-active={isActive("/signup")}>Sign up</a>
@@ -134,7 +152,7 @@ const Header: React.FC = () => {
     );
   }
 
-  if (session) {
+  else {
     left = (
       <div className="left">
         <Link href="/" legacyBehavior>

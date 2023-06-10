@@ -17,19 +17,10 @@ const Login: React.FC = () => {
           body: JSON.stringify(body),
         });
       const data = await responsePost.json();
-      // alert("this is the token " + data.token)
-      const token = data.token;
-      alert("this is the token " + token)
-      // console.log(data)
-      localStorage.removeItem('test')
-      
-      // alert("this is the token from localStorage " + localStorage.getItem('test'))
-      // console.log("this is the token from localStorage " + tryToken)
-      alert("this is the tokenLogin from localStorage before saveing " + localStorage.getItem('tokenLogin'))
       localStorage.setItem('tokenLogin', data.token);
-      alert("this is the tokenLogin from localStorage after saving " + localStorage.getItem('tokenLogin'))
-      // tryToken = localStorage.getItem('token');
-      // console.log("this is the token from localStorage after saving " + tryToken)
+      // alert("this is the tokenLogin from localStorage after saving " + localStorage.getItem('tokenLogin'));
+      const decoedToken = jwt.decode(localStorage.getItem('tokenLogin'), process.env.SECRET);
+      // alert("this is the decoedToken from localStorage after saving " + decoedToken.email);
     }
     catch (error) {
       console.error(error);

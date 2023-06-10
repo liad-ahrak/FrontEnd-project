@@ -57,7 +57,6 @@ const Blog: React.FC<Props> = (props) => {
   const paginate = (pageNumber: React.SetStateAction<number>) => {
     setCurrentPage(pageNumber);
   };
-
   return (
     <Layout>
       <div className="page">
