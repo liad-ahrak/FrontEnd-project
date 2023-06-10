@@ -1,25 +1,32 @@
 import React from "react";
 import Link from "next/link";
+import type { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
 const jwt = require('jsonwebtoken')
 import Cookies from 'universal-cookie';
 
-const Header: React.FC = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const token = context.req.cookies.tokenLogin;  
+  return {
+    props: { token },
+  };
+};
+
+const Header: React.FC = (props) => {
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
 
   const {data: session, status} = useSession();
   const cookies = new Cookies();
-  const tokenLogin = cookies.get('tokenLogin');
+  const tokenLogin = props.token  || cookies.get('tokenLogin') ;
   console.log("this is the tokenLogin header from cookies: " + tokenLogin);
   const getToken = (tokenLogin: string | null ) => {
     try{
       return jwt.decode(tokenLogin, process.env.SECRET);
     }
     catch (error) {
-      alert("this is the error from getToken: " + error);
       return null;
     }
   }
@@ -247,6 +254,7 @@ const Header: React.FC = () => {
 
   return (
     <nav>
+      {tokenLogin ? <h1>{tokenLogin}</h1> : <h1> heyyy </h1>}
       {left}
       {right}
       <style jsx>{`
