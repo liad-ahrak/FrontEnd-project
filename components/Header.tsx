@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
 const jwt = require('jsonwebtoken')
+import Cookies from 'universal-cookie';
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -10,19 +11,19 @@ const Header: React.FC = () => {
     router.pathname === pathname;
 
   const {data: session, status} = useSession();
-  // const tokenLogin = localStorage.getItem('tokenLogin');
-  // alert("this is the tokenLogin header: " + tokenLogin);
-  // const getToken = (tokenLogin: string | null ) => {
-  //   try{
-  //     return jwt.verify(tokenLogin, 'secret');
-  //   }
-  //   catch (error) {
-  //     alert("this is the error from getToken: " + error);
-  //     return null;
-  //   }
-  // }
-  // const verToken = getToken(tokenLogin);
-  // alert("this is the verToken header: " + verToken);
+  const cookies = new Cookies();
+  const tokenLogin = cookies.get('tokenLogin');
+  console.log("this is the tokenLogin header from cookies: " + tokenLogin);
+  const getToken = (tokenLogin: string | null ) => {
+    try{
+      return jwt.decode(tokenLogin, process.env.SECRET);
+    }
+    catch (error) {
+      alert("this is the error from getToken: " + error);
+      return null;
+    }
+  }
+  const verToken = getToken(tokenLogin);
   
 
 
@@ -112,7 +113,7 @@ const Header: React.FC = () => {
   //   );
   // }
 
-  if (!session) {
+  if (!session || !verToken) {
     right = (
       <div className="right">
         <Link href="/TokenAuth/login" legacyBehavior>

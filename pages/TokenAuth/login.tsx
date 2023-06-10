@@ -2,11 +2,13 @@ import React, { useState, Suspense, useRef, useEffect, use } from "react";
 import Layout from "../../components/Layout";
 import Router from "next/router";
 const jwt = require('jsonwebtoken')
+import Cookies from 'universal-cookie'; 
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
- 
+  const cookies = new Cookies();
+
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try{
@@ -18,9 +20,12 @@ const Login: React.FC = () => {
         });
       const data = await responsePost.json();
       localStorage.setItem('tokenLogin', data.token);
+      cookies.set('tokenLogin', data.token);
       alert("this is the tokenLogin login:  " + localStorage.getItem('tokenLogin'));
-      const decoedToken = jwt.decode(localStorage.getItem('tokenLogin'), process.env.SECRET);
+      alert("this is the tokenLogin login from cookie:  " + cookies.get('tokenLogin'));
+      const decoedToken = jwt.verify(localStorage.getItem('tokenLogin'), process.env.SECRET);
       alert("this is the decoedToken login:  " + decoedToken.id);
+      alert("hey")
     }
     catch (error) {
       console.error(error);

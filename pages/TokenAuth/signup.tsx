@@ -16,6 +16,7 @@ const Signup = () => {
   // const imgFormData = typeof FormData !== "undefined" ? new FormData() : null;
   const [sendSign, setSendSign] = useState(false);
   const shoot = async (e: React.SyntheticEvent) =>{
+    e.preventDefault();
     if (password != repeatPassword){
       alert('please make sure you repeated the password correctly')
     }
@@ -28,8 +29,8 @@ const Signup = () => {
           body: JSON.stringify(body),
         });
         const data = await responsePost.json();
-        const status = await responsePost.status;
-        
+        const status = responsePost.status;
+        console.log(status)
         if (status == 201){
           alert(data.message) 
           console.log('you have successfully signed up')
@@ -40,33 +41,15 @@ const Signup = () => {
           if(status == 400){
             alert(data.message);
           }
-          else{alert(`omething went wrong, please try again later ${status}`);}
+          else{alert(`something went wrong, please try again later ${status}`);}
         }
         // postId = data.id;
         // await Router.push("/drafts");
       } catch (error) {
+        console.log('this is an error')
         console.error(error);
       }
     }
-  
-    // After fizing DB:
-
-    // else{
-    //   try {
-    //     // TODO: turn password into Token
-    //     const body = { name, email, password };
-    //     const responsePost = await fetch(`/api/uploadUsers`, {
-    //       method: "POST",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify(body),
-    //     });
-    //     const data = await responsePost.json();
-    //     // postId = data.id;
-    //     await Router.push("/drafts");
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // }
 
   }
   // const onChangeProfileP = (event) => {
