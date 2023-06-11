@@ -19,14 +19,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             })
         }
         const userForToken = {
-            email: user.email,
             id: user.id,
+            email: user.email,
+            name: user.name,
+            username: user.username
         }
         const token = jwt.sign(
             userForToken, 
             process.env.SECRET,
             { expiresIn: 60 * 60 })
-        // console.log(token);
         res.status(200).json({ token: token, email: user.email, name: user.name, id: user.id })
     }
 };

@@ -3,12 +3,14 @@ import Layout from "../../components/Layout";
 import Router from "next/router";
 const jwt = require('jsonwebtoken')
 import Cookies from 'universal-cookie'; 
-import cookie from "js-cookie";
+import { stat } from "fs";
+// import cookie from "js-cookie";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const cookie = new Cookies();
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try{
@@ -19,13 +21,17 @@ const Login: React.FC = () => {
           body: JSON.stringify(body),
         });
       const data = await responsePost.json();
-      localStorage.setItem('tokenLogin', data.token);
-      cookie.set('tokenLogin', data.token);
-      alert("this is the tokenLogin login:  " + localStorage.getItem('tokenLogin'));
-      alert("this is the tokenLogin login from cookie:  " + cookie.get('tokenLogin'));
-      const decoedToken = jwt.verify(localStorage.getItem('tokenLogin'), process.env.SECRET);
-      alert("this is the decoedToken login:  " + decoedToken.id);
-      alert("hey")
+      const status = responsePost.status;
+      if(status == 200){
+        alert("Login Success");
+        cookie.set('tokenLogin', data.token);
+        // alert("this is the tokenLogin login from cookie:  " + cookie.get('tokenLogin'));
+        await Router.push("/");
+      }
+      else{
+        alert("Login Failed");
+      }
+      
     }
     catch (error) {
       console.error(error);
@@ -55,7 +61,7 @@ const Login: React.FC = () => {
             <br/>
             <br/>
             <div>              
-              <button type="submit" value="Login" disabled={!email || !password}>Sign Up</button>
+              <button type="submit" value="Login" disabled={!email || !password}>Log In</button>
             </div>
           </form>
         </div>

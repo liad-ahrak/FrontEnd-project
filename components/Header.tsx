@@ -1,39 +1,38 @@
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import Link from "next/link";
 import type { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
+// import { signOut, useSession } from "next-auth/react";
 const jwt = require('jsonwebtoken')
 import Cookies from 'universal-cookie';
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const token = context.req.cookies.tokenLogin;  
-  return {
-    props: { token },
-  };
-};
+import cookie from "js-cookie";
+import { get } from "http";
 
 const Header: React.FC = (props) => {
+  const [cookieState, setCookieState] = useState(null);
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
 
-  const {data: session, status} = useSession();
+  // const {data: session, status} = useSession();
   const cookies = new Cookies();
-  const tokenLogin = props.token  || cookies.get('tokenLogin') ;
+  const tokenLogin =  cookies.get('tokenLogin')// ||  props.token;
   console.log("this is the tokenLogin header from cookies: " + tokenLogin);
   const getToken = (tokenLogin: string | null ) => {
     try{
       return jwt.decode(tokenLogin, process.env.SECRET);
     }
     catch (error) {
-      return null;
+      return undefined;
     }
   }
   const verToken = getToken(tokenLogin);
+  useEffect(() => {
+    setCookieState(getToken(tokenLogin));}, []);
+  const removeCookie = (removeC : string) => {
+    cookies.remove(removeC);
+  }
   
-
-
   let left = (
     <div className="left">
       <Link href="/" legacyBehavior>
@@ -71,7 +70,7 @@ const Header: React.FC = (props) => {
 
   let right = null;
 
-  // const token = getToken();
+  
 
   // if (status === 'loading') {
   //   left = (
@@ -120,7 +119,7 @@ const Header: React.FC = (props) => {
   //   );
   // }
 
-  if (!session || !verToken) {
+  if ( !cookieState) {//!session ||
     right = (
       <div className="right">
         <Link href="/TokenAuth/login" legacyBehavior>
@@ -160,7 +159,7 @@ const Header: React.FC = (props) => {
     );
   }
 
-  else {
+  if (cookieState) {
     left = (
       <div className="left">
         <Link href="/" legacyBehavior>
@@ -201,14 +200,18 @@ const Header: React.FC = (props) => {
     right = (
       <div className="right">
         <p>
-          {session.user?.name} ({session.user?.email})
+          {cookieState?.name} {(cookieState?.email)}{/* {session.user?.name} ({session.user?.email}) */}
         </p>
         <Link href="/create" legacyBehavior>
           <button>
             <a>New post</a>
           </button>
         </Link>
-        <button onClick={() => signOut()}>
+        <button onClick={() =>{
+          setCookieState(null);
+          removeCookie('tokenLogin');
+          router.push('/TokenAuth/login');
+        } }>
           <a>Log out</a>
         </button>
         <style jsx>{`
@@ -254,7 +257,7 @@ const Header: React.FC = (props) => {
 
   return (
     <nav>
-      {tokenLogin ? <h1>{tokenLogin}</h1> : <h1> heyyy </h1>}
+      {/* {tokenLogin ? <h1>{cookieState}</h1> : <h1> heyyy </h1>} */}
       {left}
       {right}
       <style jsx>{`
