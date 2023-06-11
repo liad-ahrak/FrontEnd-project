@@ -1,15 +1,23 @@
 import React, { useState, Suspense, useRef, useEffect } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
-import { useSession } from "next-auth/react";
+import Cookies from "universal-cookie";
+const jwt = require('jsonwebtoken')
+// import { useSession } from "next-auth/react";
 import ClipLoader from 'react-spinners/ClipLoader';
+
+const getCookie = () => {
+  const cookies = new Cookies();
+  return jwt.decode(cookies.get('tokenLogin'));
+}
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const { data: session, status } = useSession();  
+  // const { data: session, status } = useSession();  
   const [disabledFile, setDisableFile] = useState(false);
-  const formData = new FormData();
+  const [srcVideo, setSrcVideo] = useState<File | null>(null);
+  const cookies = new Cookies();
   
   const [showSpinner, setShowSpinner] = useState(false);
   let videoURL = "";
@@ -25,15 +33,16 @@ const Draft: React.FC = () => {
   const onChange = async (event: any) => {
     event.preventDefault();
     const file = event.target.files[0];
-    formData.append('inputFile', file);
+    setSrcVideo(file);
+    // formData.append('inputFile', file);
   };
-
-  let email = session?.user?.email;
+  const token = jwt.decode(cookies.get('tokenLogin'));
+  let email = token?.email;//session?.user?.email;
   const submitData = async (e: React.SyntheticEvent) => {
     setShowSpinner(true);
     e.preventDefault();
     try {
-      const body = { title, content, session, email };
+      const body = { title, content,  email };//session,
       const responsePost = await fetch(`/api/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -47,9 +56,9 @@ const Draft: React.FC = () => {
     }
 
 
-    if(formData.has('inputFile')){
-      
-      
+    if(srcVideo){//formData.has('inputFile'
+      const formData = new FormData();
+      formData.append('inputFile', srcVideo);
       try {
         const responseVideo = await fetch("/api/upload", {
           method: "POST",
@@ -68,7 +77,7 @@ const Draft: React.FC = () => {
       // upload to mongoDB
       try{
         const videoMetadata = {
-          user: session?.user?.name,
+          user: token?.name,
           dateUploaded: new Date(),
           postId: postId, 
           cloudinaryLink: videoURL, 

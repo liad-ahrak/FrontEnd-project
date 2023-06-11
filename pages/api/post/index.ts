@@ -6,10 +6,10 @@ import prisma from '../../../lib/prisma'
 // Required fields in body: title
 // Optional fields in body: content
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-  const { title, content, session, email} = req.body;
+  const { title, content,  email} = req.body;//session,
 
   
-  if (session) {
+  // if (session) {
     const result = await prisma.post.create({
       data: {
         title: title,
@@ -18,7 +18,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       },
     });
     res.json(result);
-  } else {
-    res.status(401).send({ message: 'Unauthorized' })
-  }
+  // }
+  // else {
+  //   res.status(401).send({ message: 'Unauthorized' })
+  // }
 }

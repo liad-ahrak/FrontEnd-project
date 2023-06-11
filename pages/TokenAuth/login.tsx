@@ -23,7 +23,7 @@ const Login: React.FC = () => {
       const data = await responsePost.json();
       const status = responsePost.status;
       if(status == 200){
-        alert("Login Success");
+        // alert("Login Success");
         cookie.set('tokenLogin', data.token);
         // alert("this is the tokenLogin login from cookie:  " + cookie.get('tokenLogin'));
         await Router.push("/");
@@ -57,6 +57,7 @@ const Login: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               value={password}
+              type="password"
             />
             <br/>
             <br/>

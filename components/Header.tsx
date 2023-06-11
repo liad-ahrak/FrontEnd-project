@@ -17,7 +17,6 @@ const Header: React.FC = (props) => {
   // const {data: session, status} = useSession();
   const cookies = new Cookies();
   const tokenLogin =  cookies.get('tokenLogin')// ||  props.token;
-  console.log("this is the tokenLogin header from cookies: " + tokenLogin);
   const getToken = (tokenLogin: string | null ) => {
     try{
       return jwt.decode(tokenLogin, process.env.SECRET);
@@ -244,10 +243,10 @@ const Header: React.FC = (props) => {
           button {
             border: none;
           }
-          #light div {
+          #light  {
             background: rgba(0, 0, 0, 0.05);
           }
-          #dark  div{
+          #dark  {
             background: rgba(0, 0, 0, 0.55);
           }
         `}</style>
