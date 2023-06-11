@@ -6,10 +6,10 @@ const jwt = require('jsonwebtoken')
 // import { useSession } from "next-auth/react";
 import ClipLoader from 'react-spinners/ClipLoader';
 
-const getCookie = () => {
-  const cookies = new Cookies();
-  return jwt.decode(cookies.get('tokenLogin'));
-}
+// const getCookie = () => {
+//   const cookies = new Cookies();
+//   return jwt.decode(cookies.get('tokenLogin'));
+// }
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");

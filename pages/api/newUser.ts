@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
-    const  { userName, password, email, name } = req.body;
+    const  { userName, password, email, name , photo} = req.body;
     
     const user = await prisma.user.findFirst({
         where: {
@@ -24,6 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 username: userName,
                 email: email,
                 password: passwordHash,
+                photo: photo,
             },
           });
           res.status(201).json({ message: `User created ${newUser.name}` });

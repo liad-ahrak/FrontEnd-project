@@ -22,7 +22,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             id: user.id,
             email: user.email,
             name: user.name,
-            username: user.username
+            username: user.username,
+            photo: user.photo
         }
         const token = jwt.sign(
             userForToken, 

@@ -2,20 +2,19 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
-import { useSession, getSession } from "next-auth/react";
 import prisma from '../lib/prisma'
-
+const jwt = require('jsonwebtoken')
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getSession({ req });
-  if (!session) {
+  const tokenLogin =  req.cookies.tokenLogin;
+  if (!tokenLogin) {
     res.statusCode = 403;
     return { props: { drafts: [] } };
   }
-
+  const data = jwt.decode(tokenLogin);
   const drafts = await prisma.post.findMany({
     where: {
-      author: { email: session.user?.email },
+      author: { email: data?.email}, //session.user?.email
       published: false,
     },
     include: {
@@ -34,16 +33,17 @@ type Props = {
 };
 
 const Drafts: React.FC<Props> = (props) => {
-  const {data: session}= useSession();
-
-  if (!session) {
-    return (
-      <Layout>
-        <h1>My Drafts</h1>
-        <div>You need to be authenticated to view this page.</div>
-      </Layout>
-    );
-  }
+  // const {data: session}= useSession();
+  
+  // if (!tokenLogin) {
+  //   return (
+  //     <Layout>
+  //       <h1>My Drafts</h1>
+  //       <div>You need to be authenticated to view this page.</div>
+  //       <video src={"https://res.cloudinary.com/dsvjhuk25/video/upload/v1686492040/You_are_teasing_me_Naughty_Naughty_i9d4aw.mp4"} autoPlay />
+  //     </Layout>
+  //   );
+  // }
 
   return (
     <Layout>

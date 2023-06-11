@@ -18,6 +18,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       author: {
         select: {
           name: true,
+          email: true,
+          photo: true,
         },
       },
     },

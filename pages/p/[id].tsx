@@ -5,10 +5,11 @@ import Layout from "../../components/Layout";
 import Router from "next/router";
 import { PostProps } from "../../components/Post";
 import prisma from '../../lib/prisma'
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import { FaVideo } from "react-icons/fa";
 import ClipLoader from 'react-spinners/ClipLoader';
-
+import Cookies from 'universal-cookie';
+const jwt = require('jsonwebtoken')
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = await prisma.post.findUnique({
@@ -27,9 +28,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 async function publishPost(id: number): Promise<void> {
+  console.log(`Publish post: ${id}`);
   await fetch(`/api/publish/${id}`, {
     method: "PUT",
   });
+  
   await Router.push("/")
 }
 
@@ -41,6 +44,7 @@ async function deletePost(id: number): Promise<void> {
 }
 
 const Post: React.FC<PostProps> = (props) => {
+  const [cookieState, setCookieState] = useState(null);
   const [videoSrc, setVideoSrc] = useState<string | null>(null);
   const [rerenderKey, setRerenderKey] = useState(0);
   useEffect(() => {
@@ -60,12 +64,26 @@ const Post: React.FC<PostProps> = (props) => {
     fetchVideo();
   }, [props.id]);
 
-  const { data: session, status } = useSession();
-  if (status === 'loading') {
-    return <div>Authenticating ...</div>;
+  // const { data: session, status } = useSession();
+  // if (status === 'loading') {
+  //   return <div>Authenticating ...</div>;
+  // }
+  const cookies = new Cookies();
+  const tokenLogin =  cookies.get('tokenLogin')// ||  props.token;
+  const getToken = (tokenLogin: string | null ) => {
+    try{
+      return jwt.decode(tokenLogin, process.env.SECRET);
+    }
+    catch (error) {
+      return undefined;
+    }
   }
-  const userHasValidSession = Boolean(session);
-  const postBelongsToUser = session?.user?.email === props.author?.email;
+  const verToken = getToken(tokenLogin);
+  useEffect(() => {
+    setCookieState(getToken(tokenLogin));}, []);
+  
+  const userHasValidSession = Boolean(cookieState);
+  const postBelongsToUser = cookieState?.email === props.author?.email;
   let title = props.title;
   if (!props.published) {
     title = `${title} (Draft)`;

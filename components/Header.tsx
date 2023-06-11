@@ -159,8 +159,17 @@ const Header: React.FC = (props) => {
   }
 
   if (cookieState) {
+    const image_src = cookieState?.photo ? cookieState?.photo : "https://res.cloudinary.com/dsvjhuk25/image/upload/v1686493759/profileImage_dufqya.png"
     left = (
       <div className="left">
+        <Link href="/profile" legacyBehavior>
+          <a data-active={isActive("/profile")}>
+            {/* <Tooltip content="Profile"> */}
+              <img className="profile-picture" src={image_src} height={35} width={35} />
+            {/* </Tooltip> */}
+          </a>
+        </Link>
+        
         <Link href="/" legacyBehavior>
           <a className="bold" data-active={isActive("/")}>
             Feed
@@ -170,6 +179,11 @@ const Header: React.FC = (props) => {
           <a data-active={isActive("/drafts")}>My drafts</a>
         </Link>
         <style jsx>{`
+          .profile-picture{
+            height: 40px; 
+            weight: 40px;
+            border-radius: 50%;
+          }
           .bold {
             font-weight: bold;
           }
@@ -209,7 +223,7 @@ const Header: React.FC = (props) => {
         <button onClick={() =>{
           setCookieState(null);
           removeCookie('tokenLogin');
-          router.push('/TokenAuth/login');
+          router.push('/');//TokenAuth/login
         } }>
           <a>Log out</a>
         </button>

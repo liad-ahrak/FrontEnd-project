@@ -12,7 +12,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
-  // const [profilePicture, setProfilePicture] = useState("");
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
   // const imgFormData = typeof FormData !== "undefined" ? new FormData() : null;
   const [sendSign, setSendSign] = useState(false);
   const shoot = async (e: React.SyntheticEvent) =>{
@@ -21,8 +21,24 @@ const Signup = () => {
       alert('please make sure you repeated the password correctly')
     }
     else{
+      let photo = null;
       try {
-        const body = { userName, password, email, name };
+        if(profilePicture){
+          const formData = new FormData();
+          formData.append('inputFile', profilePicture);
+          try {
+            const responsePhoto = await fetch("/api/uploadPhoto", {
+              method: "POST",
+              body: formData
+            });
+            const data = await responsePhoto.json();
+            photo = data;
+            alert('photo uploaded successfully')
+          } catch (error) {
+            console.error(error);
+          }
+        }
+        const body = { userName, password, email, name ,photo};
         const responsePost = await fetch(`/api/newUser`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -52,15 +68,11 @@ const Signup = () => {
     }
 
   }
-  // const onChangeProfileP = (event) => {
-  //   event.preventDefault();
-  //   if (typeof FormData !== "undefined") {
-  //     const file = event.target.files[0];
-  //     imgFormData.append('inputFile', file);
-  //   } else {
-  //     console.error("FormData is not supported in this environment.");
-  //   }
-  // };
+  const onChangeProfileP = (event: any) => {
+    event.preventDefault();
+    const file = event.target.files[0];
+    setProfilePicture(file);
+  };
   
 
   return (
@@ -104,12 +116,11 @@ const Signup = () => {
             onChange={(e) => setRepeatPassword(e.target.value)}
             value={repeatPassword} required/>
 
-            {/* <input
+            <input
             type="file"
-            name = "profilePicture"
             accept="image/*"
             onChange={onChangeProfileP}            
-            /> */}
+            />
           
             
             <p>By creating an account you agree to our <a href="/TokenAuth/conditions">Terms & Privacy</a>.</p>
