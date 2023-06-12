@@ -16,6 +16,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           author: {
             select: {
               name: true,
+              email: true,
+              photo: true,
             },
           },
         },

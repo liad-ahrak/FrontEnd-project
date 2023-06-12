@@ -1,15 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt from 'jsonwebtoken';
+// const jwt = require('jsonwebtoken')
+// import jwt from 'jsonwebtoken';
 const secret = process.env.SECRET;
 
-// const checkToken = (token) =>{
-//     try{
-//         return jwt.verify(token, secret);
-//     }catch(err){
+// const verifyToken = (token : any) => {
+//     try {
+//         const decoded = jwt.verify(token, secret||"");
+//         if (!decoded) {
+//             return false;
+//         }
+//         return decoded;
+//     } catch (err) {
 //         return false;
 //     }
-
-// }
+// };
 
 export function middleware(req: NextRequest){
     let cookie = req.cookies.get("tokenLogin")?.value;
@@ -18,9 +22,15 @@ export function middleware(req: NextRequest){
         console.log("the secret is: " + secret)
         return NextResponse.redirect(new URL('/wrongPlace', req.url));
     }
-    // if(!checkToken(cookie)){
-
-
+    else{
+        // jwt.decode(cookie);
+        const valToken = true;//  verifyToken(cookie)
+        if(!valToken){
+            console.log("you have token but it's not valid");
+            return NextResponse.redirect(new URL('/wrongPlace', req.url));
+        }
+        console.log("the token is valid");
+    }
     console.log("the cookie you got: " + cookie);
     return NextResponse.next();
 } 

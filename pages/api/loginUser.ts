@@ -28,7 +28,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const token = jwt.sign(
             userForToken, 
             process.env.SECRET,
-            { expiresIn: 60 * 60 })
+            { expiresIn: 60  })//1 minute
+        
+        const verToken = jwt.verify(token, process.env.SECRET || "")
+        console.log("the token is: " + verToken.name);
         res.status(200).json({ token: token, email: user.email, name: user.name, id: user.id })
     }
 };
