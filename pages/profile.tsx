@@ -26,17 +26,44 @@ export type DecodeToken = {
 
 const Profile: React.FC <DecodeToken> = (props) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const userId = props.data?.id;
     const image_src = props.data?.photo ? props.data?.photo : "https://res.cloudinary.com/dsvjhuk25/image/upload/v1686493759/profileImage_dufqya.png"
     const shoot = async (e : React.SyntheticEvent) => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
     }
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
+        let photo = null;
+        
         if (file) {
-          // Process the file or perform any necessary actions
-          alert(`Selected file - ${file.name}`);
+            const formData = new FormData();
+            formData.append('inputFile', file);
+            try {
+                const responsePhoto = await fetch("/api/uploadPhoto", {
+                method: "POST",
+                body: formData
+                });
+                const data = await responsePhoto.json();
+                photo = data;
+            } catch (error) {
+                console.error(error);
+            }
+        //     if(photo){
+        //         try{
+        //             const body = {userId, photo};
+        //             const responsePost = await fetch(`/api/changeProfileP`, {
+        //                 method: "POST",
+        //                 headers: { "Content-Type": "application/json" },
+        //                 body: JSON.stringify(body),
+        //             });
+        //             const data = await responsePost.json();
+        //             alert(data.message)
+        //         }catch(error){     
+        //             console.error(error);
+        //         }
+        //     }
         }
       };
     return(
@@ -44,13 +71,17 @@ const Profile: React.FC <DecodeToken> = (props) => {
             <div className="profile">
             {/* <img className="profile-picture" src={image_src} alt="Profile" /> */}
             <input type="file" id="file" onChange={handleFileChange} accept="image/*" ref={fileInputRef} style={{ display: 'none' }}/>
-            <button onClick={shoot} >
+            <button className="profile-button" onClick={shoot} >
                 <img className="profile-picture" src={image_src} alt="Profile" />
             </button>
             <h2 className="name">{props.data?.name}</h2>
             <p className="email">{props.data?.email}</p>
             <p className="username">{props.data?.username}</p>
             <style jsx>{`
+                .profile-button {
+                    border: none;  
+                    background-color: transparent;
+                }
                 .profile {
                 display: flex;
                 flex-direction: column;
