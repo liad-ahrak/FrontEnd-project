@@ -1,8 +1,9 @@
-import React, { ChangeEvent, useRef } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import Link from "next/link";
 const jwt = require('jsonwebtoken')
+import Cookies from "universal-cookie";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -22,12 +23,14 @@ export type DecodeToken = {
         photo: string;
   };
 }
-    
+
 
 const Profile: React.FC <DecodeToken> = (props) => {
+    const [imageUrl, setImageUrl] = useState(props.data?.photo);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const cookies = new Cookies();
     const userId = props.data?.id;
-    const image_src = props.data?.photo ? props.data?.photo : "https://res.cloudinary.com/dsvjhuk25/image/upload/v1686493759/profileImage_dufqya.png"
+    const image_src = imageUrl ? imageUrl : "https://res.cloudinary.com/dsvjhuk25/image/upload/v1686493759/profileImage_dufqya.png"
     const shoot = async (e : React.SyntheticEvent) => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
@@ -50,20 +53,23 @@ const Profile: React.FC <DecodeToken> = (props) => {
             } catch (error) {
                 console.error(error);
             }
-        //     if(photo){
-        //         try{
-        //             const body = {userId, photo};
-        //             const responsePost = await fetch(`/api/changeProfileP`, {
-        //                 method: "POST",
-        //                 headers: { "Content-Type": "application/json" },
-        //                 body: JSON.stringify(body),
-        //             });
-        //             const data = await responsePost.json();
-        //             alert(data.message)
-        //         }catch(error){     
-        //             console.error(error);
-        //         }
-        //     }
+            // alert("userId is " + userId + " andit undefined? " + (userId === undefined))
+            if(photo){
+                try{
+                    const body = {userId, photo};
+                    const responsePost = await fetch(`/api/changeProfileP`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(body),
+                    });
+                    
+                    const data = await responsePost.json();
+                    cookies.set('tokenLogin', data.token);
+                    setImageUrl(photo);
+                }catch(error){    
+                    console.error(error);
+                }
+            }
         }
       };
     return(

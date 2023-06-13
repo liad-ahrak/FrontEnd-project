@@ -2,5 +2,10 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js"
+  "/profile": "pages/profile.js",
+  "/api/uploadPhoto": "pages/api/uploadPhoto.js",
+  "/api/changeProfileP": "pages/api/changeProfileP.js",
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
+  "/drafts": "pages/drafts.js",
+  "/api/uploadDB": "pages/api/uploadDB.js"
 }
