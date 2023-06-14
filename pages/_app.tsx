@@ -1,4 +1,4 @@
-import { SessionProvider } from "next-auth/react";
+// import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import { useEffect, useState, createContext} from "react";
 import ReactSwitch from 'react-switch';
@@ -29,9 +29,9 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <ThemeContext.Provider value={{theme, toggleTheme}}>
       <div id={theme} className="container">
-        <SessionProvider session={pageProps.session}>
+        {/* <SessionProvider session={pageProps.session}> */}
           <Component {...pageProps} />
-        </SessionProvider>
+        {/* </SessionProvider> */}
         <div className="downBar">
           <h5>{isOnline ? '✅ Online' : '❌ Disconnected'}</h5>
           <div className="switchContainer">

@@ -9,7 +9,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   const { title, content,  email} = req.body;//session,
 
   
-  // if (session) {
+  if (req.cookies.tokenLogin) {
     const result = await prisma.post.create({
       data: {
         title: title,
@@ -18,8 +18,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       },
     });
     res.json(result);
-  // }
-  // else {
-  //   res.status(401).send({ message: 'Unauthorized' })
-  // }
+  }
+  else {
+    res.status(401).send({ message: 'Unauthorized' })
+  }
 }

@@ -1,7 +1,6 @@
 import React, { useState, Suspense, useRef, useEffect } from "react";
 import Layout from "../../components/Layout";
 import Router from "next/router";
-import { useSession } from "next-auth/react";
 import ClipLoader from 'react-spinners/ClipLoader';
 import { on } from "events";
 

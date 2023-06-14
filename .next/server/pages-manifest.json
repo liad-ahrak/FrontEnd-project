@@ -3,9 +3,10 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/profile": "pages/profile.js",
+  "/": "pages/index.js",
   "/api/uploadPhoto": "pages/api/uploadPhoto.js",
   "/api/changeProfileP": "pages/api/changeProfileP.js",
-  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/drafts": "pages/drafts.js",
-  "/api/uploadDB": "pages/api/uploadDB.js"
+  "/api/posts": "pages/api/posts.js",
+  "/api/uploadDB": "pages/api/uploadDB.js",
+  "/drafts": "pages/drafts.js"
 }

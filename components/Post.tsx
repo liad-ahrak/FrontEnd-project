@@ -20,7 +20,7 @@ export type PostProps = {
 const Post: React.FC<{ post: PostProps }> = ({ post }) => {
   const noImage = "https://res.cloudinary.com/dsvjhuk25/image/upload/v1686493759/profileImage_dufqya.png"
   const authorName = post.author ? post.author.name : "Unknown author";
-  const authorEmail = post.author ? post.author.email ? post.author.email : "I don't have email" : "Unknown email";
+  // const authorEmail = post.author ? post.author.email ? post.author.email : "I don't have email" : "Unknown email";
   const authorPhoto = post.author ? post.author.photo ? post.author.photo : noImage: noImage ;
   const [videoSrc, setVideoSrc] = useState<string | null>(null);
   const [rerenderKey, setRerenderKey] = useState(0);
@@ -50,7 +50,7 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
       <div onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
         <h2><img className="profile-picture" src={authorPhoto} alt="Profile" />{videoSrc && <FaVideo/>}{post.title}</h2>
         <small>By {authorName}</small>
-        <p>{authorEmail}</p>
+        {/* <p>{authorEmail}</p> */}
         <ReactMarkdown children={post.content} />
         {/* <video src="https://res.cloudinary.com/dsvjhuk25/video/upload/v1684854201/1684854201663.mp4" controls /> */}
         {videoSrc && <video src={videoSrc} controls />}

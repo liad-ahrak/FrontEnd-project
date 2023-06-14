@@ -50,13 +50,12 @@ const Draft: React.FC = () => {
       });
       const data = await responsePost.json();
       postId = data.id;
-      await Router.push("/drafts");
     } catch (error) {
       console.error(error);
     }
 
 
-    if(srcVideo){//formData.has('inputFile'
+    if(srcVideo && postId !== ""){//formData.has('inputFile'
       const formData = new FormData();
       formData.append('inputFile', srcVideo);
       try {
@@ -94,6 +93,7 @@ const Draft: React.FC = () => {
         // setShowVideo(true);
       };
     }
+    await Router.push("/drafts");
   };
 
   return (
