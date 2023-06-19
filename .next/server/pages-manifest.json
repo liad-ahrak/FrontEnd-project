@@ -3,8 +3,10 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/api/loginUser": "pages/api/loginUser.js",
-  "/TokenAuth/login": "pages/TokenAuth/login.js",
   "/api/uploadDB": "pages/api/uploadDB.js",
-  "/api/posts": "pages/api/posts.js"
+  "/TokenAuth/signup": "pages/TokenAuth/signup.js",
+  "/api/posts": "pages/api/posts.js",
+  "/create": "pages/create.js",
+  "/TokenAuth/login": "pages/TokenAuth/login.js",
+  "/api/loginUser": "pages/api/loginUser.js"
 }

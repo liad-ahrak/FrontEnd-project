@@ -25,6 +25,11 @@
       "static/chunks/main.js",
       "static/chunks/pages/TokenAuth/login.js"
     ],
+    "/TokenAuth/signup": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/TokenAuth/signup.js"
+    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -34,6 +39,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
+    ],
+    "/create": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/create.js"
     ]
   },
   "ampFirstPages": []
