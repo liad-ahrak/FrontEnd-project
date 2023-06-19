@@ -1,10 +1,8 @@
-import React, { useState, Suspense, useRef, useEffect, use } from "react";
+import React, { useState} from "react";
 import Layout from "../../components/Layout";
 import Router from "next/router";
 const jwt = require('jsonwebtoken')
 import Cookies from 'universal-cookie'; 
-import { stat } from "fs";
-// import cookie from "js-cookie";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");

@@ -2,11 +2,9 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/profile": "pages/profile.js",
   "/": "pages/index.js",
-  "/api/uploadPhoto": "pages/api/uploadPhoto.js",
-  "/api/changeProfileP": "pages/api/changeProfileP.js",
-  "/api/posts": "pages/api/posts.js",
+  "/api/loginUser": "pages/api/loginUser.js",
+  "/TokenAuth/login": "pages/TokenAuth/login.js",
   "/api/uploadDB": "pages/api/uploadDB.js",
-  "/drafts": "pages/drafts.js"
+  "/api/posts": "pages/api/posts.js"
 }

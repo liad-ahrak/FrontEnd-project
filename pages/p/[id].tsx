@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     },
     include: {
       author: {
-        select: { name: true, email: true },
+        select: { name: true, email: true, photo: true,},
       },
     },
   });
@@ -47,6 +47,8 @@ const Post: React.FC<PostProps> = (props) => {
   const [cookieState, setCookieState] = useState(null);
   const [videoSrc, setVideoSrc] = useState<string | null>(null);
   const [rerenderKey, setRerenderKey] = useState(0);
+  const noImage = "https://res.cloudinary.com/dsvjhuk25/image/upload/v1686493759/profileImage_dufqya.png";
+  const authorPhoto = props.author ? props.author.photo ? props.author.photo : noImage: noImage ;
   useEffect(() => {
     const fetchVideo = async () => {
       try {
@@ -95,7 +97,7 @@ const Post: React.FC<PostProps> = (props) => {
     <Suspense fallback={<ClipLoader color={'#fff'} size={150}/>}>
       <Layout>
         <div>
-          <h2>{videoSrc && <FaVideo/>} {title}</h2>
+          <h2><img className="profile-picture" src={authorPhoto} alt="Profile" />{videoSrc && <FaVideo/>} {title}</h2>
           <p>By {props?.author?.name || "Unknown author"}</p>
           <ReactMarkdown children={props.content} />
           {videoSrc && <video src={videoSrc} controls />}
@@ -112,7 +114,12 @@ const Post: React.FC<PostProps> = (props) => {
             background: white;
             padding: 2rem;
           }
-
+          .profile-picture {
+            width: 35px;
+            height: 35px;
+            object-fit: cover;
+            border-radius: 50%;
+            }
           .actions {
             margin-top: 2rem;
           }
