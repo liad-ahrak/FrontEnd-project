@@ -50,6 +50,7 @@ export default function LoginCom (){
               placeholder="email"
               type="text"
               value={email}
+              name="email"
 
             />
             <input
@@ -57,6 +58,7 @@ export default function LoginCom (){
               placeholder="Password"
               value={password}
               type="password"
+              name="password"
             />
             <br/>
             <br/>

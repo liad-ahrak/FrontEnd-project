@@ -2,11 +2,13 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
   "/api/uploadDB": "pages/api/uploadDB.js",
+  "/TokenAuth/login": "pages/TokenAuth/login.js",
+  "/": "pages/index.js",
   "/TokenAuth/signup": "pages/TokenAuth/signup.js",
   "/api/posts": "pages/api/posts.js",
-  "/create": "pages/create.js",
-  "/TokenAuth/login": "pages/TokenAuth/login.js",
+  "/profile": "pages/profile.js",
+  "/api/newUser": "pages/api/newUser.js",
+  "/wrongPlace": "pages/wrongPlace.js",
   "/api/loginUser": "pages/api/loginUser.js"
 }
