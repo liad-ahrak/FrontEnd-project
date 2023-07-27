@@ -18,6 +18,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 error: 'invalid username or password'
             })
         }
+
+        const sessionId = 232322;
+        res.setHeader("Set-Cookie", `session=${sessionId}; Path=/;   Max-Age=600`);
+
         const userForToken = {
             id: user.id,
             email: user.email,

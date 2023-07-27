@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 import { useEffect, useState, createContext} from "react";
 import ReactSwitch from 'react-switch';
 
+
 export const ThemeContext = createContext({});
 
 const App = ({ Component, pageProps }: AppProps) => {
