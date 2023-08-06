@@ -13,10 +13,16 @@ export default function SignupCom (){
   const [profilePicture, setProfilePicture] = useState(null);
   // const imgFormData = typeof FormData !== "undefined" ? new FormData() : null;
   const [sendSign, setSendSign] = useState(false);
+  function isValidEmail(email) {
+    return /\S+@\S+\.\S+/.test(email);
+  }
   const shoot = async (e) =>{
     e.preventDefault();
     if (password != repeatPassword){
       alert('please make sure you repeated the password correctly')
+    }
+    else if (isValidEmail(email) == false){
+      alert('please make sure you entered a valid email')
     }
     else{
       let photo = null;
